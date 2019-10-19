@@ -1,11 +1,19 @@
 package var;
 
 public class Value {
-    String val;
+    private Object val;
+    private Class clazz;
 
-    public Value(String val) {
+    public Value(Object val, Class clazz) {
         this.val = val;
+        this.clazz = clazz;
     }
 
+    public Object getVal() {
+        return val;
+    }
 
+    public Class getClazz() {
+        return clazz;
+    }
 }
