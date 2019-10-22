@@ -1,0 +1,23 @@
+### Static tokens
+(	L_PAR
+)	R_PAR
+{	L_BRA
+}	R_BRA
+,	PARAM_SEP
+;	INSTR_SEP
+.	DOT
+
+=	AFF
+
+==	EQUAL
+!=	NOT_EQ
+>	GREATER
+<	LOWER
+>=	GREAT_EQ
+<=	LOW_EQ
+
+# Reserved keywords
+if	IF
+while	WHILE
+true	TRUE
+false	FALSE

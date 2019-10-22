@@ -1,14 +1,18 @@
 package syntax;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class Token {
     private String name, value;
+    private int line, pos;
 
-    public Token(String name, String value) {
-        this.name = name;
+    Token(String name, String value, int line, int pos) {
+        this.name = name.trim();
         this.value = value;
+        this.line = line;
+        this.pos = pos;
+    }
+
+    Token(String name, int line, int pos) {
+        this(name, "", line, pos);
     }
 
     public String getValue() {
@@ -19,15 +23,16 @@ public class Token {
         return name;
     }
 
-    public static List<Token> tokenize(String program) {
-        List<Token> l = new LinkedList<>();
+    public int getLine() {
+        return line;
+    }
 
-        StringBuilder acc = new StringBuilder();
+    public int getPos() {
+        return pos;
+    }
 
-        for (int i = 0; i < program.length(); i++) {
-            acc.append(program.charAt(i));
-        }
-
-        return l;
+    @Override
+    public String toString() {
+        return this.name + (this.value.equals("") ? "" : "(" + this.value + ")");
     }
 }
