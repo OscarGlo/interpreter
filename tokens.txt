@@ -3,12 +3,25 @@
 )	R_PAR
 {	L_BRA
 }	R_BRA
-,	PARAM_SEP
-;	INSTR_SEP
-.	DOT
+[	L_SBRA
+]	R_SBRA
+
+,	COMMA
+;	SEP
+#.	DOT
 
 =	AFF
 
+# Arithemtic
++	ADD
+-	SUB
+/	DIV
+*	MUL
+%	MOD
+^	POW
+²	SQUARE
+
+# Comparison
 ==	EQUAL
 !=	NOT_EQ
 >	GREATER
@@ -19,5 +32,9 @@
 # Reserved keywords
 if	IF
 while	WHILE
+return	RETURN
+
+# Special values
 true	TRUE
 false	FALSE
+null	NULL

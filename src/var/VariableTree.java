@@ -25,12 +25,12 @@ public class VariableTree {
         instance.delMap();
     }
 
-    public static void set(String name, String val) {
+    public static void set(String name, Value val) {
         instance.setVar(name, val);
     }
 
-    public static void unset(String name, String val) {
-        instance.setVar(name, val);
+    public static void unset(String name) {
+        instance.unsetVar(name);
     }
 
     private void addMap() {
@@ -47,9 +47,9 @@ public class VariableTree {
             this.next = null;
     }
 
-    private void setVar(String name, String val) {
+    private void setVar(String name, Value val) {
         if (this.next == null || map.containsKey(name))
-            map.put(name, new Value(val));
+            map.put(name, val);
         else
             next.setVar(name, val);
     }

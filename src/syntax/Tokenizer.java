@@ -1,17 +1,19 @@
 package syntax;
 
-import err.CompilationError;
+import err.InterpreterError;
+import syntax.token.Token;
 import util.Reader;
 import util.TrieNode;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Tokenizer {
+    private final static char
+            STR_DELIM = '"',
+            COMM_DELIM = '#';
+
     private static TrieNode<String> tokens;
 
     static {
@@ -22,69 +24,120 @@ public class Tokenizer {
         }
     }
 
+    public static TrieNode<String> getTokens() {
+        return tokens;
+    }
+
     public static List<Token> tokenize(String program) {
         List<Token> tokenList = new LinkedList<>();
 
-        StringBuilder acc = new StringBuilder();
-        int line = 1, linesSize = 0;
-        boolean inStr = false;
+        String acc = "";
+        int line = 1, pos = 0;
+        boolean inStr = false, inComm = false, inNum = false, inName = false;
         int stringPos = 0;
 
+        // Loop through every character in the program
         for (int n = 0; n < program.length(); n++) {
             char c = program.charAt(n);
+            String cStr = "" + c;
+
+            pos++;
 
             // If a linebreak is found
             if (c == '\n') {
                 // Can't linebreak while defining a string
                 if (inStr)
-                    throw new CompilationError("Unclosed string", line, stringPos);
+                    throw new InterpreterError("Unclosed string", line, stringPos);
 
+                inComm = false;
+
+                // Reset position and add line number
                 line++;
-                linesSize = n;
+                pos = 0;
 
                 c = ';';
+            } else if (c == COMM_DELIM)
+                inComm = true;
+
+            // Ignore rest if in comment
+            if (inComm)
+                continue;
+
+            if (inNum) {
+                // Multiple decimal points
+                if (c == '.' && acc.contains("."))
+                    throw new InterpreterError("Unexpected token .", line, pos);
+
+                // End of number
+                if (!cStr.matches("[0-9.]")) {
+                    if (acc.equals(".")) {
+                        inNum = false;
+                    } else {
+                        inNum = false;
+                        tokenList.add(new Token("NUMBER", acc, line, pos - acc.length()));
+                        acc = "";
+                    }
+                }
             }
 
-            acc.append(c);
-            String tok = acc.toString();
+            // End of name
+            if (inName && !cStr.matches("\\w")) {
+                inName = false;
+                tokenList.add(new Token("NAME", acc, line, pos - acc.length()));
+                acc = "";
+            }
 
-            if (c == '"') { // Beginning or end of a string
+            if (acc.length() > 0 && tokens.contains(acc) && !tokens.contains(acc + c) && !tokens.containsPrefix(acc + c)) {
+                tokenList.add(new Token(tokens.get(acc), line, pos));
+                acc = "";
+            }
+
+            // CHARACTER APPENDED
+            acc += c;
+
+            // Number
+            if (!inNum && acc.matches("[0-9.]"))
+                inNum = true;
+            // Name
+            else if (!inName && acc.matches("\\w"))
+                inName = true;
+            // Beginning or end of a string
+            else if (c == STR_DELIM) {
                 inStr = !inStr;
                 if (inStr) {
                     // Save starting position
-                    stringPos = n - linesSize;
+                    stringPos = pos;
                 } else {
                     // Add string token and clear acc
-                    tokenList.add(new Token("STRING", tok, line, stringPos));
-                    acc.delete(0, acc.length());
+                    tokenList.add(new Token("STRING", acc, line, stringPos));
+                    acc = "";
                     continue;
                 }
             }
 
-            if (inStr)
+            // Ignore token parsing
+            if (inStr || inNum)
                 continue;
 
             // If the acc is only whitespace, ignore
-            if (acc.toString().matches("\\s")) {
-                acc.delete(0, 1);
+            if (acc.matches("\\s")) {
+                acc = "";
                 continue;
             }
 
-            if (!tokens.containsPrefix(tok)) {
-                // Error on unknown token
-                if (!tokens.contains(tok))
-                    throw new CompilationError("Unknown token " + tok, line, n - linesSize);
-
-                tokenList.add(new Token(tokens.get(acc.toString()), line, n - linesSize));
-
-                acc.delete(0, acc.length());
-            }
+            if (!tokens.containsPrefix(acc))
+                if (tokens.contains(acc)) {
+                    tokenList.add(new Token(tokens.get(acc), line, pos));
+                    acc = "";
+                } else if (!tokens.contains(acc) && !inName)
+                    // Error on unknown token
+                    throw new InterpreterError("Unknown token " + acc, line, pos);
         }
 
         if (acc.length() > 0)
-            throw new CompilationError("Unknown token " + acc.toString(), line, program.length() - acc.length());
+            throw new InterpreterError("Unknown token " + acc, line, program.length() - acc.length());
         else if (inStr)
-            throw new CompilationError("Unclosed string", line, linesSize);
+            throw new InterpreterError("Unclosed string", line, pos);
 
         return tokenList;
     }
