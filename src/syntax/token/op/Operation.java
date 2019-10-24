@@ -15,4 +15,9 @@ public abstract class Operation<T> extends Value<T> {
     public Class<T> getType() {
         return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
+
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }

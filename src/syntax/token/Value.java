@@ -23,4 +23,15 @@ public abstract class Value<T> extends Token {
     public String toString() {
         return super.toString() + "(" + this.getValue() + ")";
     }
+
+    public boolean isTruthy() {
+        T val = getValue();
+
+        if (val instanceof String) {
+            return !val.equals("");
+        } else if (val instanceof Double) {
+            return (Double) val != 0;
+        }
+        return false;
+    }
 }

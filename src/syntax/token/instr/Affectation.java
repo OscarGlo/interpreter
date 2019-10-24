@@ -11,7 +11,7 @@ public class Affectation extends Instruction {
 
     public Affectation(Token[] tokens) {
         checkTokenNum(tokens.length, 4);
-        var = ((TName) tokens[0]).getValue();
+        var = ((TName) tokens[0]).getValueName();
         value = (Value) tokens[2];
     }
 

@@ -1,17 +1,24 @@
 # Cleanup
 SEP SEP	SEP
 
+# Instructions
+instr.Instruction instr.Instruction	instr.InstructionList
+TName AFF Value SEP	instr.Affectation
+
+# Conditions
+IF ParValue LBRA instr.Instruction RBRA	instr.IfBlock
+
 # Parentheses
 LPAR Value RPAR	ParValue
 
-# Simple binary number operations
-Value<Double> ADD Value<Double>	op.Addition
-Value<Double> SUB Value<Double>	op.Subtraction
-Value<Double> MUL Value<Double>	op.Multiplication
-Value<Double> DIV Value<Double>	op.Division
-Value<Double> MOD Value<Double>	op.Modulo
-Value<Double> POW Value<Double>	op.Power
+# Number operations
+Value POW Value	op.Power
+Value SQUARE	op.Square
+Value MUL Value	op.Multiplication
+Value DIV Value	op.Division
+Value MOD Value	op.Modulo
+Value ADD Value	op.Addition
+Value SUB Value	op.Subtraction
 
-# Instructions
-instr.Instruction instr.Instruction	instr.InstructionList
-Name AFF Value SEP	instr.Affectation
+# Final cleanup
+Value SEP	SEP

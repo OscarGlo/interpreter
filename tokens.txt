@@ -31,7 +31,7 @@
 
 # Reserved keywords
 if	IF
-while	WHILE
+loop	LOOP
 return	RETURN
 
 # Special values
