@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class TrieNode<T> {
     private T elem;
-    private Map<Character, TrieNode<T>> children;
+    private final Map<Character, TrieNode<T>> children;
 
     public TrieNode(T elem) {
         this.elem = elem;

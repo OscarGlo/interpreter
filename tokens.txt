@@ -1,10 +1,10 @@
 ### Static tokens
-(	L_PAR
-)	R_PAR
-{	L_BRA
-}	R_BRA
-[	L_SBRA
-]	R_SBRA
+(	LPAR
+)	RPAR
+{	LBRA
+}	RBRA
+[	LSBRA
+]	RSBRA
 
 ,	COMMA
 ;	SEP

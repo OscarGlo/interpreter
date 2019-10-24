@@ -5,6 +5,10 @@ public class InterpreterError extends Error {
         super(str);
     }
 
+    public InterpreterError(String str, Throwable t) {
+        super(str, t);
+    }
+
     public InterpreterError(String str, int line, int pos) {
         super(str.trim() + " (line " + line + ", pos " + pos + ")");
     }

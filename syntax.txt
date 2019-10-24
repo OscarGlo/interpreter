@@ -1,0 +1,17 @@
+# Cleanup
+SEP SEP	SEP
+
+# Parentheses
+LPAR Value RPAR	ParValue
+
+# Simple binary number operations
+Value<Double> ADD Value<Double>	op.Addition
+Value<Double> SUB Value<Double>	op.Subtraction
+Value<Double> MUL Value<Double>	op.Multiplication
+Value<Double> DIV Value<Double>	op.Division
+Value<Double> MOD Value<Double>	op.Modulo
+Value<Double> POW Value<Double>	op.Power
+
+# Instructions
+instr.Instruction instr.Instruction	instr.InstructionList
+Name AFF Value SEP	instr.Affectation

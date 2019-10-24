@@ -1,44 +1,36 @@
 package syntax.token;
 
+import err.InterpreterError;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Token {
-    private String name, value;
-    private int line, pos;
+    private String name;
 
-    public Token(String name, String value, int line, int pos) {
+    public Token(String name) {
         this.name = name.trim();
-        this.value = value;
-        this.line = line;
-        this.pos = pos;
     }
 
-    public Token(String name, int line, int pos) {
-        this(name, "", line, pos);
+    public Token() {
+        this.name = this.getClass().getSimpleName();
     }
 
+    // Methods for building tokens wih token arrays
     public Token(Token[] tokens) {
         throw new NotImplementedException();
     }
 
-    public String getValue() {
-        return value;
+    protected void checkTokenNum(int length, int expected) {
+        if (length != expected)
+            throw new RuntimeException("Wrong number of tokens for token class " + this.getClass().getSimpleName()
+                    + " (found " + length + ", expected " + expected + ")");
     }
 
     public String getName() {
         return name;
     }
 
-    public int getLine() {
-        return line;
-    }
-
-    public int getPos() {
-        return pos;
-    }
-
     @Override
     public String toString() {
-        return this.name + (this.value.equals("") ? "" : "(" + this.value + ")");
+        return this.name;
     }
 }

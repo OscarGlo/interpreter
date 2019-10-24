@@ -1,6 +1,9 @@
 package syntax;
 
 import err.InterpreterError;
+import syntax.token.TName;
+import syntax.token.TNumber;
+import syntax.token.TString;
 import syntax.token.Token;
 import util.Reader;
 import util.TrieNode;
@@ -22,10 +25,6 @@ public class Tokenizer {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    public static TrieNode<String> getTokens() {
-        return tokens;
     }
 
     public static List<Token> tokenize(String program) {
@@ -74,7 +73,7 @@ public class Tokenizer {
                         inNum = false;
                     } else {
                         inNum = false;
-                        tokenList.add(new Token("NUMBER", acc, line, pos - acc.length()));
+                        tokenList.add(new TNumber(acc));
                         acc = "";
                     }
                 }
@@ -83,12 +82,12 @@ public class Tokenizer {
             // End of name
             if (inName && !cStr.matches("\\w")) {
                 inName = false;
-                tokenList.add(new Token("NAME", acc, line, pos - acc.length()));
+                tokenList.add(new TName(acc));
                 acc = "";
             }
 
             if (acc.length() > 0 && tokens.contains(acc) && !tokens.contains(acc + c) && !tokens.containsPrefix(acc + c)) {
-                tokenList.add(new Token(tokens.get(acc), line, pos));
+                tokenList.add(new Token(tokens.get(acc)));
                 acc = "";
             }
 
@@ -109,7 +108,7 @@ public class Tokenizer {
                     stringPos = pos;
                 } else {
                     // Add string token and clear acc
-                    tokenList.add(new Token("STRING", acc, line, stringPos));
+                    tokenList.add(new TString(acc.substring(1, acc.length() - 1)));
                     acc = "";
                     continue;
                 }
@@ -127,7 +126,7 @@ public class Tokenizer {
 
             if (!tokens.containsPrefix(acc))
                 if (tokens.contains(acc)) {
-                    tokenList.add(new Token(tokens.get(acc), line, pos));
+                    tokenList.add(new Token(tokens.get(acc)));
                     acc = "";
                 } else if (!tokens.contains(acc) && !inName)
                     // Error on unknown token
@@ -138,6 +137,10 @@ public class Tokenizer {
             throw new InterpreterError("Unknown token " + acc, line, program.length() - acc.length());
         else if (inStr)
             throw new InterpreterError("Unclosed string", line, pos);
+
+        // Start and end tokens
+        //tokenList.add(0, new Token("SEP"));
+        tokenList.add(new Token("SEP"));
 
         return tokenList;
     }

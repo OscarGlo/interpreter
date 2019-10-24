@@ -5,11 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class Reader {
-    public static TrieNode<String> getTrie(String path) throws FileNotFoundException {
-        TrieNode<String> trie = new TrieNode<>();
-
+    private static void readFile(Consumer<String[]> put, String path) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(path));
 
         for (int n = 1; sc.hasNextLine(); n++) {
@@ -21,12 +20,25 @@ public class Reader {
 
             // If no tab is found, throw an exception
             if (line.indexOf('\t') < 0)
-                throw new RuntimeException("Invalid line format: no tab character found (" + path + ":" + n + ")");
+                throw new RuntimeException("Invalid line format: no tab character found (line " + n + ")");
 
-            String[] sp = line.split("\\t");
-            trie.put(sp[0], sp[1]);
+            put.accept(line.split("\\t"));
         }
+    }
+
+    public static TrieNode<String> getTrie(String path) throws FileNotFoundException {
+        TrieNode<String> trie = new TrieNode<>();
+
+        readFile(strs -> trie.put(strs[0], strs[1]), path);
 
         return trie;
+    }
+
+    public static Map<String, String> getMap(String path) throws FileNotFoundException {
+        Map<String, String> map = new LinkedHashMap<>();
+
+        readFile(strs -> map.put(strs[0], strs[1]), path);
+
+        return map;
     }
 }

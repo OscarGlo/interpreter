@@ -4,17 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VariableTree {
-    private static VariableTree instance;
+    private static final VariableTree instance;
 
     static {
         instance = new VariableTree();
-    }
-
-    private Map<String, Value> map;
-    private VariableTree next;
-
-    private VariableTree() {
-        this.map = new HashMap<>();
     }
 
     public static void addScope() {
@@ -25,12 +18,23 @@ public class VariableTree {
         instance.delMap();
     }
 
-    public static void set(String name, Value val) {
+    public static void set(String name, Object val) {
         instance.setVar(name, val);
+    }
+
+    public static Object get(String name) {
+        return instance.getVar(name);
     }
 
     public static void unset(String name) {
         instance.unsetVar(name);
+    }
+
+    private Map<String, Object> map;
+    private VariableTree next;
+
+    private VariableTree() {
+        this.map = new HashMap<>();
     }
 
     private void addMap() {
@@ -47,11 +51,19 @@ public class VariableTree {
             this.next = null;
     }
 
-    private void setVar(String name, Value val) {
+    private void setVar(String name, Object val) {
         if (this.next == null || map.containsKey(name))
             map.put(name, val);
         else
             next.setVar(name, val);
+    }
+
+    private Object getVar(String name) {
+        if (map.containsKey(name))
+            return map.get(name);
+        else if (this.next != null)
+            return next.getVar(name);
+        return null;
     }
 
     private void unsetVar(String name) {
