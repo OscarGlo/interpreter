@@ -1,2 +1,9 @@
-2 + 5;
-x = 3;
+x = 1
+
+if (x == "1")
+	x = 2
+else
+	x = 0
+
+x = x²
+x = "hello " * x + "world"

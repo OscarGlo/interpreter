@@ -1,12 +1,6 @@
 # Cleanup
 SEP SEP	SEP
-
-# Instructions
-instr.Instruction instr.Instruction	instr.InstructionList
-TName AFF Value SEP	instr.Affectation
-
-# Conditions
-IF ParValue LBRA instr.Instruction RBRA	instr.IfBlock
+LBRA SEP	LBRA
 
 # Parentheses
 LPAR Value RPAR	ParValue
@@ -19,6 +13,20 @@ Value DIV Value	op.Division
 Value MOD Value	op.Modulo
 Value ADD Value	op.Addition
 Value SUB Value	op.Subtraction
+
+# Comparison opertions
+Value EQUAL Value	op.Equal
+
+# Instructions
+TName AFF Value SEP	instr.Affectation
+LBRA instr.Instruction RBRA	instr.BraInstruction
+
+# Conditions
+IF ParValue instr.Instruction	instr.IfBlock
+instr.IfBlock ELSE instr.Instruction	instr.IfElseBlock
+
+# Instruction reducing
+instr.Instruction instr.Instruction	instr.InstructionList
 
 # Final cleanup
 Value SEP	SEP

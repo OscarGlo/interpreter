@@ -4,13 +4,13 @@ import syntax.token.Token;
 import syntax.token.Value;
 
 public class IfBlock extends Instruction {
-    private final Value condition;
-    private final Instruction instr;
+    final Value condition;
+    final Instruction instr;
 
     public IfBlock(Token[] tokens) {
-        checkTokenNum(tokens.length, 5);
+        checkTokenNum(tokens.length, 3);
         condition = (Value) tokens[1];
-        instr = (Instruction) tokens[3];
+        instr = (Instruction) tokens[2];
     }
 
     @Override

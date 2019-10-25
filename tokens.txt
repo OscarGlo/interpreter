@@ -8,7 +8,6 @@
 
 ,	COMMA
 ;	SEP
-#.	DOT
 
 =	AFF
 
@@ -31,6 +30,7 @@
 
 # Reserved keywords
 if	IF
+else	ELSE
 loop	LOOP
 return	RETURN
 

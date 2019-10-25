@@ -18,4 +18,9 @@ public class ParValue<T> extends Value<T> {
     public Class<T> getType() {
         return vTok.getType();
     }
+
+    @Override
+    public String toString() {
+        return "( " + vTok.toString() + " )";
+    }
 }

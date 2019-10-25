@@ -30,6 +30,9 @@ public class Tokenizer {
     public static List<Token> tokenize(String program) {
         List<Token> tokenList = new LinkedList<>();
 
+        // FIXME: Temporary bugfix, last token sometimes break
+        program += ";";
+
         String acc = "";
         int line = 1, pos = 0;
         boolean inStr = false, inComm = false, inNum = false, inName = false;
@@ -89,6 +92,7 @@ public class Tokenizer {
             if (acc.length() > 0 && tokens.contains(acc) && !tokens.contains(acc + c) && !tokens.containsPrefix(acc + c)) {
                 tokenList.add(new Token(tokens.get(acc)));
                 acc = "";
+                inName = false;
             }
 
             // CHARACTER APPENDED
@@ -128,6 +132,7 @@ public class Tokenizer {
                 if (tokens.contains(acc)) {
                     tokenList.add(new Token(tokens.get(acc)));
                     acc = "";
+                    inName = false;
                 } else if (!tokens.contains(acc) && !inName)
                     // Error on unknown token
                     throw new InterpreterError("Unknown token " + acc, line, pos);
@@ -137,10 +142,6 @@ public class Tokenizer {
             throw new InterpreterError("Unknown token " + acc, line, program.length() - acc.length());
         else if (inStr)
             throw new InterpreterError("Unclosed string", line, pos);
-
-        // Start and end tokens
-        //tokenList.add(0, new Token("SEP"));
-        tokenList.add(new Token("SEP"));
 
         return tokenList;
     }

@@ -18,6 +18,6 @@ public class Main {
         TreeBuilder.build(tokens);
         ((Instruction) tokens.get(0)).execute();
 
-        System.out.println(VariableTree.get("y"));
+        System.out.println(VariableTree.get("x"));
     }
 }

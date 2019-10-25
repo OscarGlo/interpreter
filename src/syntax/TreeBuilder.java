@@ -100,6 +100,8 @@ public class TreeBuilder {
 
     @SuppressWarnings("unchecked")
     public static void build(List<Token> tokens) {
+        // TODO: Treat parentheses first !
+
         boolean replacedOne;
         do {
             do {
