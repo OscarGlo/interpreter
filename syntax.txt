@@ -18,6 +18,11 @@ Value SUB Value	op.Subtraction
 # Comparison operations
 Value EQUAL Value	op.Equal
 
+# Functions
+TName COMMA TName	ParamList
+TName COMMA ParamList	ParamList
+FUN ParamList
+
 # Instructions
 TName AFF Value SEP	instr.Affectation
 LBRA instr.Instruction RBRA	instr.BraInstruction

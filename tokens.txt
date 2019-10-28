@@ -32,7 +32,7 @@
 if	IF
 else	ELSE
 loop	LOOP
-return	RETURN
+fun	FUN
 
 # Special values
 true	TRUE
