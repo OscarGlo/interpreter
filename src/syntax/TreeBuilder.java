@@ -32,10 +32,6 @@ public class TreeBuilder {
 
         String[] patArr = pattern.split("\\s");
 
-        boolean replaced, replacedOnce = false;
-
-        replaced = false;
-
         int start = -1, pos = 0;
 
         for (int i = 0; i < list.size(); i++) {
@@ -44,20 +40,19 @@ public class TreeBuilder {
 
             boolean hasSuper = false;
             try {
-                boolean hasType = true;
+                //boolean hasType = true;
 
                 Class<?> curClass = tok.getClass();
-                    /*if (tokPat.contains("<")) {
-                        String typeParam = tokPat.substring(tokPat.indexOf('<') + 1, tokPat.length() - 1);
-                        tokPat = tokPat.substring(0, tokPat.indexOf('<'));
+                /*if (tokPat.contains("<")) {
+                    String typeParam = tokPat.substring(tokPat.indexOf('<') + 1, tokPat.length() - 1);
+                    tokPat = tokPat.substring(0, tokPat.indexOf('<'));
 
-                        hasType = ((Value) tok).getType().getSimpleName().equals(typeParam);
-                    }*/
+                    hasType = ((Value) tok).getType().getSimpleName().equals(typeParam);
+                }*/
 
                 Class<?> supClass = Class.forName("syntax.token." + tokPat);
-                hasSuper = supClass.isAssignableFrom(curClass) && hasType;
-            } catch (Exception ignored) {
-            }
+                hasSuper = supClass.isAssignableFrom(curClass) /*&& hasType*/;
+            } catch (Exception ignored) {}
 
             if (hasSuper || tok.getName().equals(tokPat)) {
                 if (pos == 0)
@@ -104,23 +99,21 @@ public class TreeBuilder {
 
         boolean replacedOne;
         do {
-            do {
-                System.out.println(Arrays.toString(tokens.toArray()));
+            System.out.println(Arrays.toString(tokens.toArray()));
 
-                replacedOne = false;
-                for (String pattern : syntax.keySet()) {
-                    Class<? extends Token> clazz = null;
-                    try {
-                        clazz = (Class<? extends Token>) Class.forName("syntax.token." + syntax.get(pattern));
-                    } catch (ClassNotFoundException ignored) {
-                    }
-
-                    if (replace(tokens, pattern, clazz, clazz == null ? syntax.get(pattern) : null)) {
-                        replacedOne = true;
-                        break;
-                    }
+            replacedOne = false;
+            for (String pattern : syntax.keySet()) {
+                Class<? extends Token> clazz = null;
+                try {
+                    clazz = (Class<? extends Token>) Class.forName("syntax.token." + syntax.get(pattern));
+                } catch (ClassNotFoundException ignored) {
                 }
-            } while (replacedOne);
-        } while (tokens.removeIf(t -> t.getName().equals("SEP")));
+
+                if (replace(tokens, pattern, clazz, clazz == null ? syntax.get(pattern) : null)) {
+                    replacedOne = true;
+                    break;
+                }
+            }
+        } while (replacedOne);
     }
 }

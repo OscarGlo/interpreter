@@ -1,20 +1,21 @@
 # Cleanup
 SEP SEP	SEP
 LBRA SEP	LBRA
+RBRA SEP	RBRA
 
 # Parentheses
 LPAR Value RPAR	ParValue
 
 # Number operations
-Value POW Value	op.Power
 Value SQUARE	op.Square
+Value POW Value	op.Power
 Value MUL Value	op.Multiplication
 Value DIV Value	op.Division
 Value MOD Value	op.Modulo
 Value ADD Value	op.Addition
 Value SUB Value	op.Subtraction
 
-# Comparison opertions
+# Comparison operations
 Value EQUAL Value	op.Equal
 
 # Instructions
@@ -24,8 +25,10 @@ LBRA instr.Instruction RBRA	instr.BraInstruction
 # Conditions
 IF ParValue instr.Instruction	instr.IfBlock
 instr.IfBlock ELSE instr.Instruction	instr.IfElseBlock
+IF ParValue LOOP instr.Instruction	instr.LoopBlock
 
 # Instruction reducing
+SEP instr.Instruction	instr.ReduceInstruction
 instr.Instruction instr.Instruction	instr.InstructionList
 
 # Final cleanup

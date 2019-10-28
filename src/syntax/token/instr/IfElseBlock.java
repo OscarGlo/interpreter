@@ -1,9 +1,6 @@
 package syntax.token.instr;
 
 import syntax.token.Token;
-import syntax.token.Value;
-
-import java.util.Arrays;
 
 public class IfElseBlock extends Instruction {
     private final IfBlock ifBlock;

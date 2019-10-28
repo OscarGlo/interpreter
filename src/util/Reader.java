@@ -22,6 +22,13 @@ public class Reader {
             if (line.indexOf('\t') < 0)
                 throw new RuntimeException("Invalid line format: no tab character found (line " + n + ")");
 
+            // Remove trailing comments
+            if (line.contains("#"))
+                line= line.substring(0, line.indexOf('#'));
+
+            // Trim start & end
+            line = line.replaceAll("(^\\s+|\\s+$)", "");
+
             put.accept(line.split("\\t"));
         }
     }
