@@ -3,19 +3,19 @@ package syntax.token.instr;
 import syntax.token.Token;
 import syntax.token.Value;
 
-public class IfBlock extends Instruction {
+public class LoopBlock extends Instruction {
     final Value condition;
     final Instruction instr;
 
-    public IfBlock(Token[] tokens) {
-        checkTokenNum(tokens.length, 3);
+    public LoopBlock(Token[] tokens) {
+        checkTokenNum(tokens.length, 4);
         condition = (Value) tokens[1];
-        instr = (Instruction) tokens[2];
+        instr = (Instruction) tokens[3];
     }
 
     @Override
     public void execute() {
-        if (condition.isTruthy())
+        while (condition.isTruthy())
             instr.executeInScope();
     }
 }

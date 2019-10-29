@@ -10,7 +10,7 @@ public class Affectation extends Instruction {
     private Value value;
 
     public Affectation(Token[] tokens) {
-        checkTokenNum(tokens.length, 4);
+        checkTokenNum(tokens.length, 3);
         var = ((TName) tokens[0]).getValueName();
         value = (Value) tokens[2];
     }

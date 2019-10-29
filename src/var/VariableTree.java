@@ -1,13 +1,28 @@
 package var;
 
+import syntax.token.DefaultFunction;
+import syntax.token.Function;
+import syntax.token.Value;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class VariableTree {
     private static final VariableTree instance;
 
+    private static final Map<String, Object> globals;
+
     static {
         instance = new VariableTree();
+        globals = new HashMap<>();
+
+        globals.put("print", new DefaultFunction() {
+            @Override
+            public Object call(Value[] values) {
+                System.out.println(values[0]);
+                return null;
+            }
+        });
     }
 
     public static void addScope() {
@@ -52,6 +67,9 @@ public class VariableTree {
     }
 
     private void setVar(String name, Object val) {
+        if (globals.containsKey(name))
+            return;
+
         if (this.next == null || map.containsKey(name))
             map.put(name, val);
         else
@@ -59,6 +77,9 @@ public class VariableTree {
     }
 
     private Object getVar(String name) {
+        if (globals.containsKey(name))
+            return globals.get(name);
+
         if (map.containsKey(name))
             return map.get(name);
         else if (this.next != null)

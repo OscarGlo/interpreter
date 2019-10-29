@@ -6,9 +6,11 @@ public class InstructionList extends Instruction {
     private Instruction i1, i2;
 
     public InstructionList(Token[] tokens) {
-        checkTokenNum(tokens.length, 2);
         i1 = (Instruction) tokens[0];
-        i2 = (Instruction) tokens[1];
+        if (tokens.length == 2)
+            i2 = (Instruction) tokens[1];
+        else
+            i2 = (Instruction) tokens[2];
     }
 
     @Override

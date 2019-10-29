@@ -20,6 +20,11 @@
 ^	POW
 ²	SQUARE
 
+# Boolean
+|	OR
+&	AND
+!	NOT
+
 # Comparison
 ==	EQUAL
 !=	NOT_EQ

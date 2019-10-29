@@ -4,19 +4,19 @@ import syntax.token.Token;
 
 public class IfElseBlock extends Instruction {
     private final IfBlock ifBlock;
-    private final Instruction elseBlock;
+    private final ElseBlock elseBlock;
 
     public IfElseBlock(Token[] tokens) {
-        checkTokenNum(tokens.length, 3);
+        checkTokenNum(tokens.length, 2);
         ifBlock = (IfBlock) tokens[0];
-        elseBlock = (Instruction) tokens[2];
+        elseBlock = (ElseBlock) tokens[1];
     }
 
     @Override
     public void execute() {
         if (ifBlock.condition.isTruthy())
-            ifBlock.instr.execute();
+            ifBlock.instr.executeInScope();
         else
-            elseBlock.execute();
+            elseBlock.executeInScope();
     }
 }

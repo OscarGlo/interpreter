@@ -1,6 +1,5 @@
 package syntax.token;
 
-import err.InterpreterError;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Token {

@@ -15,26 +15,41 @@ Value MOD Value	op.Modulo
 Value ADD Value	op.Addition
 Value SUB Value	op.Subtraction
 
+# Boolean operations
+Value OR Value	op.Or
+Value AND Value	op.And
+NOT Value	op.Not
+
 # Comparison operations
 Value EQUAL Value	op.Equal
+Value NOT_EQ Value	op.NotEq
+Value LOWER Value	op.Lower
+Value GREATER Value	op.Greater
+Value LOW_EQ Value	op.LowEq
+Value GREAT_EQ Value	op.GreatEq
 
 # Functions
-TName COMMA TName	ParamList
-TName COMMA ParamList	ParamList
-FUN ParamList
+TName COMMA TName	NameList
+TName COMMA NameList	NameList
+FUN LPAR ParamList RPAR instr.Instruction	Function
+FUN ParValue<TName> instr.Instruction	Function
+TName LPAR ValueList RPAR	FunCall
+TName ParValue	FunCall
 
 # Instructions
-TName AFF Value SEP	instr.Affectation
+TName AFF Value	instr.Affectation
 LBRA instr.Instruction RBRA	instr.BraInstruction
 
-# Conditions
+# Blocks
 IF ParValue instr.Instruction	instr.IfBlock
-instr.IfBlock ELSE instr.Instruction	instr.IfElseBlock
+ELSE instr.Instruction	instr.ElseBlock
+IfBlock ElseBlock	instr.IfElseBlock
 IF ParValue LOOP instr.Instruction	instr.LoopBlock
 
 # Instruction reducing
-SEP instr.Instruction	instr.ReduceInstruction
+instr.Instruction SEP instr.Instruction	instr.InstructionList
 instr.Instruction instr.Instruction	instr.InstructionList
 
 # Final cleanup
+instr.Instruction SEP	instr.ReduceInstruction
 Value SEP	SEP

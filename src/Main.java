@@ -1,7 +1,7 @@
 import err.InterpreterError;
+import syntax.Tokenizer;
 import syntax.TreeBuilder;
 import syntax.token.Token;
-import syntax.Tokenizer;
 import syntax.token.instr.Instruction;
 import var.VariableTree;
 

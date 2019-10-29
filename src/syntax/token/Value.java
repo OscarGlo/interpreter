@@ -25,8 +25,10 @@ public abstract class Value<T> extends Token {
     }
 
     public boolean isTruthy() {
-        T val = getValue();
+        return isTruthy(getValue());
+    }
 
+    public static boolean isTruthy(Object val) {
         if (val instanceof String)
             return !val.equals("");
         else if (val instanceof Double)

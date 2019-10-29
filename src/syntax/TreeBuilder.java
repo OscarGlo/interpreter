@@ -1,6 +1,7 @@
 package syntax;
 
 import syntax.token.Token;
+import syntax.token.Value;
 import util.Reader;
 
 import java.io.FileNotFoundException;
@@ -40,18 +41,18 @@ public class TreeBuilder {
 
             boolean hasSuper = false;
             try {
-                //boolean hasType = true;
+                boolean hasType = true;
 
                 Class<?> curClass = tok.getClass();
-                /*if (tokPat.contains("<")) {
+                if (tokPat.contains("<")) {
                     String typeParam = tokPat.substring(tokPat.indexOf('<') + 1, tokPat.length() - 1);
                     tokPat = tokPat.substring(0, tokPat.indexOf('<'));
 
                     hasType = ((Value) tok).getType().getSimpleName().equals(typeParam);
-                }*/
+                }
 
                 Class<?> supClass = Class.forName("syntax.token." + tokPat);
-                hasSuper = supClass.isAssignableFrom(curClass) /*&& hasType*/;
+                hasSuper = supClass.isAssignableFrom(curClass) && hasType;
             } catch (Exception ignored) {}
 
             if (hasSuper || tok.getName().equals(tokPat)) {
