@@ -4,21 +4,24 @@ import java.util.Collections;
 import java.util.List;
 
 public class FunCall extends Value<Object> {
-    private final Function fun;
+    private final TName funName;
     private final List<Value> args;
 
     public FunCall(Token[] tokens) {
-        fun = (Function) ((Value) tokens[0]).getValue();
+        funName = (TName) tokens[0];
 
         if (tokens[1] instanceof ParValue)
             args = Collections.singletonList((ParValue) tokens[1]);
+        else if (tokens[1].getName().equals("LPAR"))
+            args = Collections.emptyList();
         else
             args = ((ValueList) tokens[1]).asList();
     }
 
     @Override
     public Object getValue() {
-        return fun.call((Value[]) args.toArray());
+        Function fun = (Function) funName.getValue();
+        return fun.call(args.toArray(new Value[] {}));
     }
 
     @Override

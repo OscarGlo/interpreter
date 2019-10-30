@@ -13,7 +13,7 @@
 
 # Arithemtic
 +	ADD
--	SUB
+-	MINUS
 /	DIV
 *	MUL
 %	MOD
@@ -33,10 +33,14 @@
 >=	GREAT_EQ
 <=	LOW_EQ
 
+# Other ops
+?	QUESTION
+
 # Reserved keywords
 if	IF
 else	ELSE
 loop	LOOP
+let	LET
 fun	FUN
 
 # Special values

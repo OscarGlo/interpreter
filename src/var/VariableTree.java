@@ -1,16 +1,15 @@
 package var;
 
+import main.Main;
 import syntax.token.DefaultFunction;
-import syntax.token.Function;
 import syntax.token.Value;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class VariableTree {
-    private static final VariableTree instance;
-
     private static final Map<String, Object> globals;
+    private static VariableTree instance;
 
     static {
         instance = new VariableTree();
@@ -19,22 +18,34 @@ public class VariableTree {
         globals.put("print", new DefaultFunction() {
             @Override
             public Object call(Value[] values) {
-                System.out.println(values[0]);
+                System.out.println(values[0].getValue());
                 return null;
+            }
+        });
+
+        globals.put("eval", new DefaultFunction() {
+            @Override
+            public Object call(Value[] values) {
+                Value val = (Value) Main.evaluate((String) values[0].getValue(), true);
+                return val.getValue();
             }
         });
     }
 
     public static void addScope() {
-        instance.addMap();
+        instance = new VariableTree(instance);
     }
 
     public static void delScope() {
-        instance.delMap();
+        instance = instance.next;
     }
 
     public static void set(String name, Object val) {
         instance.setVar(name, val);
+    }
+
+    public static void setInScope(String name, Object val) {
+        instance.setVarInScope(name, val);
     }
 
     public static Object get(String name) {
@@ -52,38 +63,36 @@ public class VariableTree {
         this.map = new HashMap<>();
     }
 
-    private void addMap() {
-        if (this.next != null)
-            next.addMap();
-        else
-            this.next = new VariableTree();
-    }
-
-    private void delMap() {
-        if (this.next != null && this.next.next != null)
-            this.next.delMap();
-        else
-            this.next = null;
+    private VariableTree(VariableTree next) {
+        this();
+        this.next = next;
     }
 
     private void setVar(String name, Object val) {
-        if (globals.containsKey(name))
-            return;
+        VariableTree scope = this;
 
-        if (this.next == null || map.containsKey(name))
-            map.put(name, val);
-        else
-            next.setVar(name, val);
+        while (scope.next != null) {
+            if (scope.map.containsKey(name)) {
+                scope.setVarInScope(name, val);
+                return;
+            }
+            scope = scope.next;
+        }
+
+        setVarInScope(name, val);
+    }
+
+    private void setVarInScope(String name, Object val) {
+        map.put(name, val);
     }
 
     private Object getVar(String name) {
-        if (globals.containsKey(name))
-            return globals.get(name);
-
         if (map.containsKey(name))
             return map.get(name);
         else if (this.next != null)
             return next.getVar(name);
+        else if (globals.containsKey(name))
+            return globals.get(name);
         return null;
     }
 

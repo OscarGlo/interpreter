@@ -48,4 +48,8 @@ public class Reader {
 
         return map;
     }
+
+    public static String getString(String path) throws FileNotFoundException {
+        return new Scanner(new File(path)).useDelimiter("\\A").next();
+    }
 }

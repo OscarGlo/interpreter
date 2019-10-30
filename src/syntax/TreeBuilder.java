@@ -94,15 +94,47 @@ public class TreeBuilder {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
     public static void build(List<Token> tokens) {
-        // TODO: Treat parentheses first !
+        build(tokens, false);
+    }
 
-        boolean replacedOne;
+    @SuppressWarnings("unchecked")
+    public static void build(List<Token> tokens, boolean debug) {
+        // First, recursively call to treat parentheses
+        boolean replacedPar;
         do {
-            System.out.println(Arrays.toString(tokens.toArray()));
+            replacedPar = false;
+            int parIndex = -1, lPar = 0, rPar = 0;
 
-            replacedOne = false;
+            for (int i = 0; i < tokens.size(); i++) {
+                Token tok = tokens.get(i);
+
+                if (tok.getName().equals("LPAR")) {
+                    if (parIndex == -1)
+                        parIndex = i;
+                    lPar++;
+                } else if (tok.getName().equals("RPAR")) {
+                    rPar++;
+                    if (rPar == lPar) {
+                        if ((parIndex != 0 || i != tokens.size() - 1) && i > parIndex + 1) {
+                            TreeBuilder.build(tokens.subList(parIndex, i + 1), debug);
+                            replacedPar = true;
+                            break;
+                        } else {
+                            parIndex = -1;
+                            rPar = 0;
+                            lPar = 0;
+                        }
+                    }
+                }
+            }
+        } while (replacedPar);
+
+        boolean replaced;
+        do {
+            if (debug) System.out.println(Arrays.toString(tokens.toArray()));
+
+            replaced = false;
             for (String pattern : syntax.keySet()) {
                 Class<? extends Token> clazz = null;
                 try {
@@ -111,10 +143,10 @@ public class TreeBuilder {
                 }
 
                 if (replace(tokens, pattern, clazz, clazz == null ? syntax.get(pattern) : null)) {
-                    replacedOne = true;
+                    replaced = true;
                     break;
                 }
             }
-        } while (replacedOne);
+        } while (replaced);
     }
 }

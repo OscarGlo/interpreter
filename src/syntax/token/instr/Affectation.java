@@ -6,8 +6,8 @@ import syntax.token.Value;
 import var.VariableTree;
 
 public class Affectation extends Instruction {
-    private String var;
-    private Value value;
+    String var;
+    Value value;
 
     public Affectation(Token[] tokens) {
         checkTokenNum(tokens.length, 3);

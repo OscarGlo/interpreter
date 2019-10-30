@@ -1,3 +1,2 @@
-fun (x) {
-	print(x)
-} ("test")
+let x = "2/-(1)"
+print("\"" + x + "\" = " + eval(x))

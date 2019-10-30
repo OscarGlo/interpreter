@@ -6,14 +6,31 @@ RBRA SEP	RBRA
 # Parentheses
 LPAR Value RPAR	ParValue
 
+# Functions
+TName COMMA TName	NameList
+TName COMMA NameList	NameList
+
+FUN LPAR ParamList RPAR instr.Instruction	Function
+FUN ParValue<TName> instr.Instruction	Function
+FUN LPAR RPAR instr.Instruction	Function
+
+TName LPAR ValueList RPAR	FunCall
+TName ParValue	FunCall
+TName LPAR RPAR	FunCall
+
 # Number operations
+DIV	Value	op.Inverse
+MINUS Value	op.Opposite
 Value SQUARE	op.Square
 Value POW Value	op.Power
 Value MUL Value	op.Multiplication
 Value DIV Value	op.Division
 Value MOD Value	op.Modulo
 Value ADD Value	op.Addition
-Value SUB Value	op.Subtraction
+Value MINUS Value	op.Subtraction
+
+# Other functions
+QUESTION Value	op.Nullity
 
 # Boolean operations
 Value OR Value	op.Or
@@ -28,16 +45,11 @@ Value GREATER Value	op.Greater
 Value LOW_EQ Value	op.LowEq
 Value GREAT_EQ Value	op.GreatEq
 
-# Functions
-TName COMMA TName	NameList
-TName COMMA NameList	NameList
-FUN LPAR ParamList RPAR instr.Instruction	Function
-FUN ParValue<TName> instr.Instruction	Function
-TName LPAR ValueList RPAR	FunCall
-TName ParValue	FunCall
 
 # Instructions
+LET TName AFF Value	instr.Definition
 TName AFF Value	instr.Affectation
+FunCall	instr.FunCallInstr
 LBRA instr.Instruction RBRA	instr.BraInstruction
 
 # Blocks

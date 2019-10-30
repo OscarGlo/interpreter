@@ -1,22 +1,17 @@
 package syntax;
 
 import err.InterpreterError;
-import syntax.token.TName;
-import syntax.token.TNumber;
-import syntax.token.TString;
-import syntax.token.Token;
+import syntax.token.*;
 import util.Reader;
 import util.TrieNode;
+import var.VariableTree;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Tokenizer {
-    private final static char
-            STR_DELIM = '"',
-            COMM_DELIM = '#';
-
     private static TrieNode<String> tokens;
 
     static {
@@ -30,12 +25,9 @@ public class Tokenizer {
     public static List<Token> tokenize(String program) {
         List<Token> tokenList = new LinkedList<>();
 
-        // FIXME: Temporary bugfix, last token sometimes break
-        program += ";";
-
         String acc = "";
         int line = 1, pos = 0;
-        boolean inStr = false, inComm = false, inNum = false, inName = false;
+        boolean inStr = false, inComm = false, inNum = false, inName = false, escape = false;
         int stringPos = 0;
 
         // Loop through every character in the program
@@ -58,8 +50,12 @@ public class Tokenizer {
                 pos = 0;
 
                 c = ';';
-            } else if (c == COMM_DELIM)
+            } else if (c == '#') {
                 inComm = true;
+            } else if (inStr && c == '\\' && !escape) {
+                escape = true;
+                continue;
+            }
 
             // Ignore rest if in comment
             if (inComm)
@@ -105,16 +101,20 @@ public class Tokenizer {
             else if (!inName && acc.matches("\\w"))
                 inName = true;
             // Beginning or end of a string
-            else if (c == STR_DELIM) {
-                inStr = !inStr;
-                if (inStr) {
-                    // Save starting position
-                    stringPos = pos;
+            else if (c == '"') {
+                if (!escape) {
+                    inStr = !inStr;
+                    if (inStr) {
+                        // Save starting position
+                        stringPos = pos;
+                    } else {
+                        // Add string token and clear acc
+                        tokenList.add(new TString(acc.substring(1, acc.length() - 1)));
+                        acc = "";
+                        continue;
+                    }
                 } else {
-                    // Add string token and clear acc
-                    tokenList.add(new TString(acc.substring(1, acc.length() - 1)));
-                    acc = "";
-                    continue;
+                    escape = false;
                 }
             }
 
@@ -138,11 +138,48 @@ public class Tokenizer {
                     throw new InterpreterError("Unknown token " + acc, line, pos);
         }
 
+        if (inNum) {
+            tokenList.add(new TNumber(acc));
+            acc = "";
+        } else if (inStr) {
+            tokenList.add(new TString(acc));
+            acc = "";
+        } else if (inName) {
+            tokenList.add(new TName(acc));
+            acc = "";
+        }
+
         if (acc.length() > 0)
             throw new InterpreterError("Unknown token " + acc, line, program.length() - acc.length());
         else if (inStr)
-            throw new InterpreterError("Unclosed string", line, pos);
+            throw new InterpreterError("Unclosed string", line, pos - acc.length());
 
         return tokenList;
     }
+
+    /*private static void syntacticSugar(List<Token> tokenList) {
+        Token tok = null, prev;
+
+        boolean replace;
+        do {
+            replace = false;
+
+            for (int i = 0; i < tokenList.size(); i++) {
+                prev = tok;
+                tok = tokenList.get(i);
+
+                boolean prevVal = prev instanceof Value;
+
+                if (prevVal && tok.getName().equals("MINUS"))
+                    tokenList.add(i, new Token("ADD"));
+                else if (prevVal && tok.getName().equals("DIV"))
+                    tokenList.add(i, new Token("MUL"));
+                else
+                    continue;
+
+                replace = true;
+                break;
+            }
+        } while (replace);
+    }*/
 }
