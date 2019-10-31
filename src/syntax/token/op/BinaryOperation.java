@@ -9,8 +9,8 @@ public abstract class BinaryOperation<A, B, T> extends Operation<T> {
     }
 
     private final BinaryOperator<A, B, T> operator;
-    private final Value<A> a;
-    private final Value<B> b;
+    private Value<A> a;
+    private Value<B> b;
 
     @SuppressWarnings("unchecked")
     BinaryOperation(BinaryOperator<A, B, T> operator, Token[] tokens) {

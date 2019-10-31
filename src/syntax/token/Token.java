@@ -28,6 +28,26 @@ public class Token {
         return name;
     }
 
+    public boolean matches(String pattern) {
+        boolean hasSuper = false;
+        try {
+            boolean hasType = true;
+
+            Class<?> curClass = getClass();
+            if (pattern.contains("<")) {
+                String typeParam = pattern.substring(pattern.indexOf('<') + 1, pattern.length() - 1);
+                pattern = pattern.substring(0, pattern.indexOf('<'));
+
+                hasType = ((Value) this).getType().getSimpleName().equals(typeParam);
+            }
+
+            Class<?> supClass = Class.forName("syntax.token." + pattern);
+            hasSuper = supClass.isAssignableFrom(curClass) && hasType;
+        } catch (Exception ignored) {}
+
+        return hasSuper || name.equals(pattern);
+    }
+
     @Override
     public String toString() {
         return this.name;

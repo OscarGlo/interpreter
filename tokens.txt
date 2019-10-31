@@ -12,7 +12,7 @@
 =	AFF
 
 # Arithemtic
-+	ADD
++	PLUS
 -	MINUS
 /	DIV
 *	MUL

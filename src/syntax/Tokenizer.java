@@ -156,30 +156,4 @@ public class Tokenizer {
 
         return tokenList;
     }
-
-    /*private static void syntacticSugar(List<Token> tokenList) {
-        Token tok = null, prev;
-
-        boolean replace;
-        do {
-            replace = false;
-
-            for (int i = 0; i < tokenList.size(); i++) {
-                prev = tok;
-                tok = tokenList.get(i);
-
-                boolean prevVal = prev instanceof Value;
-
-                if (prevVal && tok.getName().equals("MINUS"))
-                    tokenList.add(i, new Token("ADD"));
-                else if (prevVal && tok.getName().equals("DIV"))
-                    tokenList.add(i, new Token("MUL"));
-                else
-                    continue;
-
-                replace = true;
-                break;
-            }
-        } while (replace);
-    }*/
 }

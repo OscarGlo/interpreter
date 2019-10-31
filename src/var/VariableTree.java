@@ -1,35 +1,39 @@
 package var;
 
 import main.Main;
-import syntax.token.DefaultFunction;
+import syntax.token.Function;
 import syntax.token.Value;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class VariableTree {
     private static final Map<String, Object> globals;
     private static VariableTree instance;
 
+    private static Function globalFunction(java.util.function.Function<Value[], Object> fun) {
+        return new Function() {
+            @Override
+            public Object call(Value[] values) {
+                return fun.apply(values);
+            }
+        };
+    }
+
     static {
         instance = new VariableTree();
         globals = new HashMap<>();
 
-        globals.put("print", new DefaultFunction() {
-            @Override
-            public Object call(Value[] values) {
-                System.out.println(values[0].getValue());
-                return null;
-            }
-        });
+        globals.put("print", globalFunction((values) -> {
+            System.out.println(values[0].getValue());
+            return null;
+        }));
 
-        globals.put("eval", new DefaultFunction() {
-            @Override
-            public Object call(Value[] values) {
-                Value val = (Value) Main.evaluate((String) values[0].getValue(), true);
-                return val.getValue();
-            }
-        });
+        globals.put("eval", globalFunction((values) -> {
+            Value val = (Value) Main.evaluate((String) values[0].getValue(), true);
+            return val.getValue();
+        }));
     }
 
     public static void addScope() {

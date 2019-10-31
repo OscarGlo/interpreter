@@ -21,7 +21,7 @@ public class Main {
         return tokens.get(0);
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
         String code = Reader.getString("code.txt");
 
         long start = System.currentTimeMillis();

@@ -1,7 +1,6 @@
 package syntax;
 
 import syntax.token.Token;
-import syntax.token.Value;
 import util.Reader;
 
 import java.io.FileNotFoundException;
@@ -33,29 +32,49 @@ public class TreeBuilder {
 
         String[] patArr = pattern.split("\\s");
 
+        String negLookbehind = "", first = patArr[0];
+        // Parse negative lookbehind and remove from pattern
+        if (first.matches("\\(-[A-Za-z]+\\)")) {
+            negLookbehind = first.substring(2, first.length() - 1);
+            patArr = Arrays.copyOfRange(patArr, 1, patArr.length);
+        }
+        String negLookahead = "", last = patArr[patArr.length];
+        // Parse negative lookbehind and remove from pattern
+        if (last.matches("\\(-[A-Za-z]+\\)")) {
+            negLookahead = last.substring(2, last.length() - 1);
+            patArr = Arrays.copyOfRange(patArr, 1, patArr.length);
+        }
+
         int start = -1, pos = 0;
 
         for (int i = 0; i < list.size(); i++) {
-            String tokPat = patArr[pos];
+            String pat = patArr[pos];
             Token tok = list.get(i);
 
-            boolean hasSuper = false;
-            try {
-                boolean hasType = true;
-
-                Class<?> curClass = tok.getClass();
-                if (tokPat.contains("<")) {
-                    String typeParam = tokPat.substring(tokPat.indexOf('<') + 1, tokPat.length() - 1);
-                    tokPat = tokPat.substring(0, tokPat.indexOf('<'));
-
-                    hasType = ((Value) tok).getType().getSimpleName().equals(typeParam);
+            // Ignore if previous token matches negative lookbehind or potential last token matches negative lookahead
+            if (i == start) {
+                if (i > 0 && negLookbehind.equals("")) {
+                    if (list.get(i - 1).matches(negLookbehind))
+                        continue;
+                } else if (i + patArr.length < list.size() && negLookahead.equals("")) {
+                    if (list.get(i + patArr.length).matches(negLookahead))
+                        continue;
                 }
+            }
 
-                Class<?> supClass = Class.forName("syntax.token." + tokPat);
-                hasSuper = supClass.isAssignableFrom(curClass) && hasType;
-            } catch (Exception ignored) {}
+            boolean match = false;
+            if (pat.contains("|")) {
+                for (String tName : pat.split("\\|"))
+                    if (tok.matches(tName)) {
+                        match = true;
+                        break;
+                    }
+            } else {
+                match = tok.matches(pat);
+            }
 
-            if (hasSuper || tok.getName().equals(tokPat)) {
+            if (match) {
+                // First character match, save starting position
                 if (pos == 0)
                     start = i;
 
@@ -66,7 +85,8 @@ public class TreeBuilder {
 
                     subList.clear(); // Clear used tokens in parameter list
 
-                    if (clazz == null) { // Static terminal token
+                    if (clazz == null) {
+                        // Static terminal token
                         list.add(start, new Token(name));
                         return true;
                     } else {
@@ -79,10 +99,6 @@ public class TreeBuilder {
                             e.printStackTrace();
                         }
                     }
-
-                    // Reset values
-                    start = -1;
-                    pos = 0;
                 } else
                     pos++;
             } else {

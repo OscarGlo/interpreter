@@ -7,8 +7,7 @@ RBRA SEP	RBRA
 LPAR Value RPAR	ParValue
 
 # Functions
-TName COMMA TName	NameList
-TName COMMA NameList	NameList
+TName COMMA TName|NameList	NameList
 
 FUN LPAR ParamList RPAR instr.Instruction	Function
 FUN ParValue<TName> instr.Instruction	Function
@@ -18,33 +17,25 @@ TName LPAR ValueList RPAR	FunCall
 TName ParValue	FunCall
 TName LPAR RPAR	FunCall
 
-# Number operations
-DIV	Value	op.Inverse
-MINUS Value	op.Opposite
-Value SQUARE	op.Square
-Value POW Value	op.Power
-Value MUL Value	op.Multiplication
-Value DIV Value	op.Division
-Value MOD Value	op.Modulo
-Value ADD Value	op.Addition
-Value MINUS Value	op.Subtraction
-
-# Other functions
+# Unary
+(-Value) DIV Value	op.Inverse
+(-Value) MINUS Value	op.Opposite
 QUESTION Value	op.Nullity
-
-# Boolean operations
-Value OR Value	op.Or
-Value AND Value	op.And
 NOT Value	op.Not
 
-# Comparison operations
-Value EQUAL Value	op.Equal
-Value NOT_EQ Value	op.NotEq
-Value LOWER Value	op.Lower
-Value GREATER Value	op.Greater
-Value LOW_EQ Value	op.LowEq
-Value GREAT_EQ Value	op.GreatEq
+# Power
+Value SQUARE	op.Square
+Value POW Value	op.Power
 
+# Basic operation order groups
+Value MUL|DIV|MOD Value	op.MulOperation
+Value ADD|MINUS Value	op.AddOperation
+Value GREATER|GREAT_EQ|LOWER|LOW_EQ Value	op.CompOperation
+Value EQUAL|NOT_EQ Value	op.EqOperation
+
+# Boolean operations
+Value AND Value	op.And
+Value OR Value	op.Or
 
 # Instructions
 LET TName AFF Value	instr.Definition
