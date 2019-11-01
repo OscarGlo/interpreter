@@ -5,6 +5,7 @@ import var.VariableTree;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Function extends Value<Function> {
     private List<String> params;
@@ -18,7 +19,8 @@ public class Function extends Value<Function> {
         } else if (tokens[1].getName().equals("LPAR"))
             params = Collections.emptyList();
         else
-            params = ((NameList) tokens[1]).asList();
+            params = ((TokenList<TName>) tokens[1]).asList()
+                    .stream().map(TName::getValueName).collect(Collectors.toList());
 
         instr = (Instruction) tokens[tokens.length - 1];
     }

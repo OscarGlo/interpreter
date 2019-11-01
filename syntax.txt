@@ -7,13 +7,11 @@ RBRA SEP	RBRA
 LPAR Value RPAR	ParValue
 
 # Functions
-TName COMMA TName|NameList	NameList
-
-FUN LPAR ParamList RPAR instr.Instruction	Function
+FUN ParList<TName> instr.Instruction	Function
 FUN ParValue<TName> instr.Instruction	Function
 FUN LPAR RPAR instr.Instruction	Function
 
-TName LPAR ValueList RPAR	FunCall
+TName ParList<Value>	FunCall
 TName ParValue	FunCall
 TName LPAR RPAR	FunCall
 
@@ -29,7 +27,7 @@ Value POW Value	op.Power
 
 # Basic operation order groups
 Value MUL|DIV|MOD Value	op.MulOperation
-Value ADD|MINUS Value	op.AddOperation
+Value PLUS|MINUS Value	op.AddOperation
 Value GREATER|GREAT_EQ|LOWER|LOW_EQ Value	op.CompOperation
 Value EQUAL|NOT_EQ Value	op.EqOperation
 
@@ -42,6 +40,10 @@ LET TName AFF Value	instr.Definition
 TName AFF Value	instr.Affectation
 FunCall	instr.FunCallInstr
 LBRA instr.Instruction RBRA	instr.BraInstruction
+
+# Lists
+Token|TokenList COMMA Token	TokenList
+LPAR TokenList RPAR	ParList
 
 # Blocks
 IF ParValue instr.Instruction	instr.IfBlock

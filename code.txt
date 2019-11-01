@@ -1,2 +1,2 @@
-let x = "2/-(1)"
+let x = "z"
 print("\"" + x + "\" = " + eval(x))

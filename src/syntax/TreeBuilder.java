@@ -38,7 +38,7 @@ public class TreeBuilder {
             negLookbehind = first.substring(2, first.length() - 1);
             patArr = Arrays.copyOfRange(patArr, 1, patArr.length);
         }
-        String negLookahead = "", last = patArr[patArr.length];
+        String negLookahead = "", last = patArr[patArr.length - 1];
         // Parse negative lookbehind and remove from pattern
         if (last.matches("\\(-[A-Za-z]+\\)")) {
             negLookahead = last.substring(2, last.length() - 1);
@@ -52,11 +52,11 @@ public class TreeBuilder {
             Token tok = list.get(i);
 
             // Ignore if previous token matches negative lookbehind or potential last token matches negative lookahead
-            if (i == start) {
-                if (i > 0 && negLookbehind.equals("")) {
+            if (start == -1) {
+                if (i > 0 && !negLookbehind.equals("")) {
                     if (list.get(i - 1).matches(negLookbehind))
                         continue;
-                } else if (i + patArr.length < list.size() && negLookahead.equals("")) {
+                } else if (i + patArr.length < list.size() && !negLookahead.equals("")) {
                     if (list.get(i + patArr.length).matches(negLookahead))
                         continue;
                 }
@@ -102,7 +102,11 @@ public class TreeBuilder {
                 } else
                     pos++;
             } else {
-                pos = 0;
+                if (pos != 0) {
+                    pos = 0;
+                    // Retry this character as first character if not first character in match
+                    i--;
+                }
                 start = -1;
             }
         }

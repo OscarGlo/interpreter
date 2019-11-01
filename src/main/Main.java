@@ -7,7 +7,6 @@ import syntax.token.Token;
 import syntax.token.instr.Instruction;
 import util.Reader;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 public class Main {

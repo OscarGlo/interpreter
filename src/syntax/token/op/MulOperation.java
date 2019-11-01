@@ -25,10 +25,12 @@ public class MulOperation extends BinaryOperation<Object, Object, Object> {
             } else if (op.equals("DIV")) {
                 // Division
                 return (Double) a / (Double) b;
-            } else {
+            } else if (op.equals("MOD")) {
                 // Modulo
                 return (Double) a % (Double) b;
             }
+
+            return null;
         }, tokens);
     }
 }

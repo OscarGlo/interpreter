@@ -15,7 +15,7 @@ public class FunCall extends Value<Object> {
         else if (tokens[1].getName().equals("LPAR"))
             args = Collections.emptyList();
         else
-            args = ((ValueList) tokens[1]).asList();
+            args = ((TokenList<Value>) tokens[1]).asList();
     }
 
     @Override

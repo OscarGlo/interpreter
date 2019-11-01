@@ -8,14 +8,16 @@ public class CompOperation extends BinaryOperation<Double, Double, Double> {
             String op = tokens[1].getName();
 
             boolean val;
-            if ("GREATER".equals(op))
+            if (op.equals("GREATER"))
                 val = a > b;
-            else if ("GREAT_EQ".equals(op))
+            else if (op.equals("GREAT_EQ"))
                 val = a >= b;
-            else if ("LOWER".equals(op))
+            else if (op.equals("LOWER"))
                 val = a < b;
-            else
+            else if (op.equals("LOW_EQ"))
                 val = a <= b;
+            else
+                return null;
 
             return (double) (val ? 1 : 0);
         }, tokens);
