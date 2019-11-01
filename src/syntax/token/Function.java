@@ -12,6 +12,8 @@ public class Function extends Value<Function> {
     private Instruction instr;
 
     public Function(Token[] tokens) {
+        super(tokens[0]);
+
         if (tokens[1] instanceof ParValue) {
             Token tok = ((ParValue) tokens[1]).getToken();
             String valName = ((TName) tok).getValueName();
@@ -25,7 +27,9 @@ public class Function extends Value<Function> {
         instr = (Instruction) tokens[tokens.length - 1];
     }
 
-    public Function() {}
+    public Function() {
+        super();
+    }
 
     @Override
     public Function getValue() {

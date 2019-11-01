@@ -4,12 +4,20 @@ public abstract class Value<T> extends Token {
     private T value;
     private Class<T> type;
 
-    public Value(T value, Class<T> type) {
+    public Value(T value, Class<T> type, int line, int pos) {
         this.value = value;
         this.type = type;
+        setLine(line);
+        setPos(pos);
     }
 
-    public Value() {}
+    public Value(Token tok) {
+        super(tok);
+    }
+
+    public Value() {
+        super();
+    }
 
     public T getValue() {
         return value;

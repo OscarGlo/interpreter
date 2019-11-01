@@ -1,2 +1,8 @@
-let x = "z"
-print("\"" + x + "\" = " + eval(x))
+let x = "cc"
+
+if (x == "cc") {
+	let x = "zz"
+	x = x + z
+	print(x)
+}
+print(x)

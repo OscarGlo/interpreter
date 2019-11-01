@@ -1,8 +1,8 @@
 package syntax.token;
 
 public class TNumber extends Value<Double> {
-    public TNumber(String value) {
-        super(Double.parseDouble(value), Double.class);
+    public TNumber(String value, int line, int pos) {
+        super(Double.parseDouble(value), Double.class, line, pos);
     }
 
     public static String toString(Object obj) {

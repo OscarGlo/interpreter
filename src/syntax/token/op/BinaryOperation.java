@@ -14,6 +14,8 @@ public abstract class BinaryOperation<A, B, T> extends Operation<T> {
 
     @SuppressWarnings("unchecked")
     BinaryOperation(BinaryOperator<A, B, T> operator, Token[] tokens) {
+        super(tokens[1]);
+
         this.operator = operator;
 
         checkTokenNum(tokens.length, 3);

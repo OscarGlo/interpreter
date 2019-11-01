@@ -4,18 +4,25 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Token {
     private String name;
+    private int line, pos;
 
     public Token(String name) {
         this.name = name.trim();
+    }
+
+    // Methods for building tokens wih token arrays
+    public Token(Token[] tokens) {
+        throw new NotImplementedException();
     }
 
     public Token() {
         this.name = this.getClass().getSimpleName();
     }
 
-    // Methods for building tokens wih token arrays
-    public Token(Token[] tokens) {
-        throw new NotImplementedException();
+    public Token(Token token) {
+        this();
+        this.line = token.line;
+        this.pos = token.pos;
     }
 
     protected void checkTokenNum(int length, int expected) {
@@ -46,6 +53,14 @@ public class Token {
         } catch (Exception ignored) {}
 
         return hasSuper || name.equals(pattern);
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
     }
 
     @Override

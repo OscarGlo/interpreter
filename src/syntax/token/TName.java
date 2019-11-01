@@ -5,7 +5,7 @@ import var.VariableTree;
 public class TName extends Value<Object> {
     private final String value;
 
-    public TName(String value) {
+    public TName(String value, int line, int pos) {
         super();
         this.value = value;
     }

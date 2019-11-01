@@ -13,6 +13,8 @@ public abstract class UnaryOperation<A, T> extends Operation<T> {
 
     @SuppressWarnings("unchecked")
     UnaryOperation(UnaryOperator<A, T> operator, boolean postFix, Token[] tokens) {
+        super(tokens[postFix ? 1 : 0]);
+
         this.operator = operator;
 
         checkTokenNum(tokens.length, 2);
