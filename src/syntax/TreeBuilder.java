@@ -87,7 +87,7 @@ public class TreeBuilder {
 
                     if (clazz == null) {
                         // Static terminal token
-                        list.add(start, new Token(name));
+                        list.add(start, new Token(name, elems[0].getLine(),  elems[0].getPos()));
                         return true;
                     } else {
                         // Token class

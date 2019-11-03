@@ -1,8 +1,9 @@
 let x = "cc"
 
-if (x == "cc") {
-	let x = "zz"
-	x = x + z
+f = fun(x) {
+	x = "f(" + x + ")"
 	print(x)
 }
+
+f(x)
 print(x)

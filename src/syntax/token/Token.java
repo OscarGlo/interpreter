@@ -6,8 +6,10 @@ public class Token {
     private String name;
     private int line, pos;
 
-    public Token(String name) {
+    public Token(String name, int line, int pos) {
         this.name = name.trim();
+        this.line = line;
+        this.pos = pos;
     }
 
     // Methods for building tokens wih token arrays
@@ -55,8 +57,16 @@ public class Token {
         return hasSuper || name.equals(pattern);
     }
 
+    public int getLine() {
+        return line;
+    }
+
     public void setLine(int line) {
         this.line = line;
+    }
+
+    public int getPos() {
+        return pos;
     }
 
     public void setPos(int pos) {

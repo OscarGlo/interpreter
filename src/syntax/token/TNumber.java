@@ -12,8 +12,10 @@ public class TNumber extends Value<Double> {
                 return "" + db.intValue();
             else
                 return db.toString();
-        } else {
+        } else if (obj != null) {
             return obj.toString();
+        } else {
+            return "null";
         }
     }
 }

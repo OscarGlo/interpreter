@@ -10,6 +10,10 @@ import util.Reader;
 import java.util.List;
 
 public class Main {
+    public static Token evaluate(String code) {
+        return evaluate(code, false);
+    }
+
     public static Token evaluate(String code, boolean debug) {
         List<Token> tokens = Tokenizer.tokenize(code);
         TreeBuilder.build(tokens, debug);
@@ -24,7 +28,7 @@ public class Main {
         String code = Reader.getString("code.txt");
 
         long start = System.currentTimeMillis();
-        Instruction instr = (Instruction) evaluate(code, true);
+        Instruction instr = (Instruction) evaluate(code);
         System.out.println("Parse time = " + (System.currentTimeMillis() - start) + "ms\n-----");
 
         instr.execute();

@@ -4,10 +4,8 @@ import err.InterpreterError;
 import syntax.token.*;
 import util.Reader;
 import util.TrieNode;
-import var.VariableTree;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -72,7 +70,7 @@ public class Tokenizer {
                         inNum = false;
                     } else {
                         inNum = false;
-                        tokenList.add(new TNumber(acc));
+                        tokenList.add(new TNumber(acc, line, pos));
                         acc = "";
                     }
                 }
@@ -81,12 +79,12 @@ public class Tokenizer {
             // End of name
             if (inName && !cStr.matches("\\w")) {
                 inName = false;
-                tokenList.add(new TName(acc));
+                tokenList.add(new TName(acc, line, pos));
                 acc = "";
             }
 
             if (acc.length() > 0 && tokens.contains(acc) && !tokens.contains(acc + c) && !tokens.containsPrefix(acc + c)) {
-                tokenList.add(new Token(tokens.get(acc)));
+                tokenList.add(new Token(tokens.get(acc), line, pos));
                 acc = "";
                 inName = false;
             }
@@ -109,7 +107,7 @@ public class Tokenizer {
                         stringPos = pos;
                     } else {
                         // Add string token and clear acc
-                        tokenList.add(new TString(acc.substring(1, acc.length() - 1)));
+                        tokenList.add(new TString(acc.substring(1, acc.length() - 1), line, pos));
                         acc = "";
                         continue;
                     }
@@ -130,7 +128,7 @@ public class Tokenizer {
 
             if (!tokens.containsPrefix(acc))
                 if (tokens.contains(acc)) {
-                    tokenList.add(new Token(tokens.get(acc)));
+                    tokenList.add(new Token(tokens.get(acc), line, pos));
                     acc = "";
                     inName = false;
                 } else if (!tokens.contains(acc) && !inName)
@@ -139,13 +137,13 @@ public class Tokenizer {
         }
 
         if (inNum) {
-            tokenList.add(new TNumber(acc));
+            tokenList.add(new TNumber(acc, line, pos));
             acc = "";
         } else if (inStr) {
-            tokenList.add(new TString(acc));
+            tokenList.add(new TString(acc, line, pos));
             acc = "";
         } else if (inName) {
-            tokenList.add(new TName(acc));
+            tokenList.add(new TName(acc, line, pos));
             acc = "";
         }
 
