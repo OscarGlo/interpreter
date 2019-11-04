@@ -12,6 +12,10 @@ public class Definition extends Affectation {
 
     @Override
     public void execute() {
-        VariableTree.setInScope(var, value.getValue());
+        try {
+            VariableTree.setInScope(var, value.getValue());
+        } catch (Throwable t) {
+            throw makeStacktrace(t, "Error on definition", value.getStacktrace());
+        }
     }
 }

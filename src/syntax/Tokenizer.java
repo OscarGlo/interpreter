@@ -84,7 +84,7 @@ public class Tokenizer {
             }
 
             if (acc.length() > 0 && tokens.contains(acc) && !tokens.contains(acc + c) && !tokens.containsPrefix(acc + c)) {
-                tokenList.add(new Token(tokens.get(acc), line, pos));
+                tokenList.add(new Token(tokens.get(acc), line, pos-1));
                 acc = "";
                 inName = false;
             }

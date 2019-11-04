@@ -7,6 +7,7 @@ public class IfElseBlock extends Instruction {
     private final ElseBlock elseBlock;
 
     public IfElseBlock(Token[] tokens) {
+        super(tokens[0]);
         checkTokenNum(tokens.length, 2);
         ifBlock = (IfBlock) tokens[0];
         elseBlock = (ElseBlock) tokens[1];
@@ -15,8 +16,18 @@ public class IfElseBlock extends Instruction {
     @Override
     public void execute() {
         if (ifBlock.condition.isTruthy())
-            ifBlock.instr.executeInScope();
+            try {
+                ifBlock.instr.executeInScope();
+            } catch (Throwable t) {
+                this.stack = ifBlock.getStacktrace();
+                throw t;
+            }
         else
-            elseBlock.executeInScope();
+            try {
+                elseBlock.executeInScope();
+            } catch (Throwable t) {
+                this.stack = elseBlock.getStacktrace();
+                throw t;
+            }
     }
 }

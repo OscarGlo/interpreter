@@ -1,5 +1,6 @@
 package syntax.token.op;
 
+import err.Stacktrace;
 import syntax.token.Token;
 import syntax.token.Value;
 
@@ -27,6 +28,10 @@ public abstract class UnaryOperation<A, T> extends Operation<T> {
 
     @Override
     public T getValue() {
-        return operator.calculate(a.getValue());
+        try {
+            return operator.calculate(a.getValue());
+        } catch (Throwable t) {
+            throw makeStacktrace(t, "Operation error", a.getStacktrace());
+        }
     }
 }

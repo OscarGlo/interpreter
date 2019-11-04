@@ -1,5 +1,6 @@
 package syntax.token.op;
 
+import err.Stacktrace;
 import syntax.token.Token;
 import syntax.token.Value;
 
@@ -25,6 +26,11 @@ public abstract class BinaryOperation<A, B, T> extends Operation<T> {
 
     @Override
     public T getValue() {
-        return operator.calculate(a.getValue(), b.getValue());
+        try {
+            return operator.calculate(a.getValue(), b.getValue());
+        } catch (Throwable t) {
+            Stacktrace stack = (a.getStacktrace() != null ? a.getStacktrace() : b.getStacktrace());
+            throw makeStacktrace(t, "Operation error", stack);
+        }
     }
 }

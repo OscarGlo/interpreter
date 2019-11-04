@@ -8,6 +8,7 @@ public class IfBlock extends Instruction {
     final Instruction instr;
 
     public IfBlock(Token[] tokens) {
+        super(tokens[0]);
         checkTokenNum(tokens.length, 3);
         condition = (Value) tokens[1];
         instr = (Instruction) tokens[2];
@@ -16,6 +17,10 @@ public class IfBlock extends Instruction {
     @Override
     public void execute() {
         if (condition.isTruthy())
-            instr.executeInScope();
+            try {
+                instr.executeInScope();
+            } catch (Throwable t) {
+                throw makeStacktrace(t,"Error in if", instr.getStacktrace());
+            }
     }
 }

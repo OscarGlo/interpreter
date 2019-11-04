@@ -1,17 +1,18 @@
 package syntax.token.instr;
 
+import err.Stacktrace;
 import syntax.token.Token;
 
 public class ReduceInstruction extends Instruction {
-    private Instruction instr;
+    Instruction instr;
 
     public ReduceInstruction(Token[] tokens) {
-        for (Token tok : tokens) {
+        super(tokens[0]);
+        for (Token tok : tokens)
             if (tok instanceof Instruction) {
                 instr = (Instruction) tok;
                 return;
             }
-        }
         throw new RuntimeException("No instruction found in parameters for ReduceInstruction");
     }
 
@@ -23,5 +24,10 @@ public class ReduceInstruction extends Instruction {
     @Override
     public String toString() {
         return "-" + instr.toString();
+    }
+
+    @Override
+    public Stacktrace getStacktrace() {
+        return instr.getStacktrace();
     }
 }

@@ -1,5 +1,6 @@
 package syntax.token.op;
 
+import err.InterpreterError;
 import syntax.token.Token;
 
 public class MulOperation extends BinaryOperation<Object, Object, Object> {
@@ -24,6 +25,8 @@ public class MulOperation extends BinaryOperation<Object, Object, Object> {
                 return str.toString();
             } else if (op.equals("DIV")) {
                 // Division
+                if ((Double) b == 0)
+                    throw new InterpreterError("Cannot divide by zero");
                 return (Double) a / (Double) b;
             } else if (op.equals("MOD")) {
                 // Modulo

@@ -31,6 +31,10 @@ public class Main {
         Instruction instr = (Instruction) evaluate(code);
         System.out.println("Parse time = " + (System.currentTimeMillis() - start) + "ms\n-----");
 
-        instr.execute();
+        try {
+            instr.execute();
+        } catch (InterpreterError err) {
+            System.err.println(instr.getStacktrace());
+        }
     }
 }

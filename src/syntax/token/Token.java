@@ -1,10 +1,13 @@
 package syntax.token;
 
+import err.InterpreterError;
+import err.Stacktrace;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Token {
     private String name;
     private int line, pos;
+    protected Stacktrace stack;
 
     public Token(String name, int line, int pos) {
         this.name = name.trim();
@@ -52,7 +55,8 @@ public class Token {
 
             Class<?> supClass = Class.forName("syntax.token." + pattern);
             hasSuper = supClass.isAssignableFrom(curClass) && hasType;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         return hasSuper || name.equals(pattern);
     }
@@ -71,6 +75,23 @@ public class Token {
 
     public void setPos(int pos) {
         this.pos = pos;
+    }
+
+    public Stacktrace getStacktrace() {
+        return this.stack;
+    }
+
+    protected InterpreterError makeStacktrace(Throwable t, String error, Stacktrace stack) {
+        String text = "at " + this.getClass().getSimpleName() + " (line " + line + ", pos " + pos + ")";
+        if (t instanceof InterpreterError)
+            if (stack != null)
+                this.stack = new Stacktrace(text, stack);
+            else
+                this.stack = new Stacktrace(text, t.getMessage());
+        else
+            this.stack = new Stacktrace(text, error);
+
+        return new InterpreterError(error);
     }
 
     @Override

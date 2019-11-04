@@ -7,3 +7,5 @@ f = fun(x) {
 
 f(x)
 print(x)
+
+let z = 5 / 0
