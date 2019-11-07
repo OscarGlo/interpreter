@@ -1,11 +1,2 @@
-let x = "cc"
-
-f = fun(x) {
-	x = "f(" + x + ")"
-	print(x)
-}
-
-f(x)
-print(x)
-
-let z = 5 / 0
+let a = [[1, 0], 3, "succ"]
+print(a[0][1²])

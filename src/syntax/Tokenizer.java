@@ -48,7 +48,7 @@ public class Tokenizer {
                 pos = 0;
 
                 c = ';';
-            } else if (c == '#') {
+            } else if (c == '#' && !inComm) {
                 inComm = true;
             } else if (inStr && c == '\\' && !escape) {
                 escape = true;
@@ -66,10 +66,8 @@ public class Tokenizer {
 
                 // End of number
                 if (!cStr.matches("[0-9.]")) {
-                    if (acc.equals(".")) {
-                        inNum = false;
-                    } else {
-                        inNum = false;
+                    inNum = false;
+                    if (!acc.equals(".")) {
                         tokenList.add(new TNumber(acc, line, pos));
                         acc = "";
                     }

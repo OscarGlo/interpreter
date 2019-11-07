@@ -26,7 +26,7 @@ public class VariableTree {
         globals = new HashMap<>();
 
         globals.put("print", globalFunction((values) -> {
-            System.out.println(values[0].getValue());
+            System.out.println(Value.toString(values[0].getValue()));
             return null;
         }));
 

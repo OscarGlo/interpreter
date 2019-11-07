@@ -1,5 +1,8 @@
 package syntax.token;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public abstract class Value<T> extends Token {
     private T value;
     private Class<T> type;
@@ -25,6 +28,29 @@ public abstract class Value<T> extends Token {
 
     public Class<T> getType() {
         return type;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static String toString(Object obj) {
+        if (obj instanceof Double) {
+            Double db = (Double) obj;
+            if ((double) db.intValue() == db)
+                return "" + db.intValue();
+            else
+                return db.toString();
+
+        } else if (obj instanceof String) {
+            return '"' + (String) obj + '"';
+
+        } else if (obj instanceof List) {
+            List l = (List) obj;
+            String join = (String) l.stream().map(Value::toString).collect(Collectors.joining(", "));
+            return "[" + join + "]";
+
+        } else if (obj == null) {
+            return "null";
+        }
+        return obj.toString();
     }
 
     @Override

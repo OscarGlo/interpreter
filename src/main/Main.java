@@ -28,7 +28,7 @@ public class Main {
         String code = Reader.getString("code.txt");
 
         long start = System.currentTimeMillis();
-        Instruction instr = (Instruction) evaluate(code);
+        Instruction instr = (Instruction) evaluate(code, true);
         System.out.println("Parse time = " + (System.currentTimeMillis() - start) + "ms\n-----");
 
         try {

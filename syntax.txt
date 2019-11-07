@@ -7,17 +7,22 @@ RBRA SEP	RBRA
 LPAR Value RPAR	ParValue
 
 # Functions
-FUN ParList<TName> instr.Instruction	Function
-FUN ParValue<TName> instr.Instruction	Function
+FUN ParList<TName>|ParValue<TName> instr.Instruction	Function
 FUN LPAR RPAR instr.Instruction	Function
 
 TName ParList<Value>	FunCall
 TName ParValue	FunCall
 TName LPAR RPAR	FunCall
 
+# Arrays
+Value LSBRA Value RSBRA	ArrayAccess
+
+LSBRA TokenList<Value>|Value RSBRA	TArray
+LSBRA RSBRA	TArray
+
 # Unary
-(-Value) DIV Value	op.Inverse
-(-Value) MINUS Value	op.Opposite
+(-Value) DIV Value	op.Opposite
+(-Value) MINUS Value	op.Inverse
 QUESTION Value	op.Nullity
 NOT Value	op.Not
 

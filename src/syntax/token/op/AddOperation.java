@@ -1,7 +1,7 @@
 package syntax.token.op;
 
-import syntax.token.TNumber;
 import syntax.token.Token;
+import syntax.token.Value;
 
 public class AddOperation extends BinaryOperation<Object, Object, Object> {
     @SuppressWarnings("RedundantCast")
@@ -12,7 +12,7 @@ public class AddOperation extends BinaryOperation<Object, Object, Object> {
             if (op.equals("PLUS")) {
                 // Addition
                 if (a instanceof String || b instanceof String)
-                    return "" + TNumber.toString(a) + TNumber.toString(b);
+                    return "" + Value.toString(a) + Value.toString(b);
                 else
                     return Double.sum((Double) a, (Double) b);
 
