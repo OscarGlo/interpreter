@@ -1,4 +1,4 @@
-let incArray = fun(n, start) {
+##let incArray = fun(n, start) {
 	let a = []; let i = 0
 	if (?start)  # ? operator tests for non-nullity
 		i = start
@@ -11,11 +11,18 @@ let incArray = fun(n, start) {
 	return a
 }
 
-let unaryToBinary = fun(f, a) return f(a, a)  # Functions can be defined without brackets
+let unaryToBinary = fun(f) {
+	return fun(a)
+		return fun()
+			return f(a, a)  # Functions can be defined without brackets
+}
+
+let newFun = unaryToBinary(incArray);
 
 let i = 0; let arr = []
 
 if (i < 5) loop {
-	print(unaryToBinary(incArray, i))
+	a = newFun()(i)
+	print(a)
 	i+
-}
+}##

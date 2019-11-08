@@ -4,13 +4,12 @@ import main.Main;
 import syntax.token.val.Function;
 import syntax.token.val.Value;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class VariableTree {
     private static final Map<String, Object> globals;
-    private static VariableTree instance;
+    private static List<VariableTree> instanceStack;
 
     private static Function globalFunction(java.util.function.Function<Value[], Object> fun) {
         return new Function() {
@@ -22,7 +21,8 @@ public class VariableTree {
     }
 
     static {
-        instance = new VariableTree();
+        instanceStack = new LinkedList<>();
+        instanceStack.add(new VariableTree());
         globals = new HashMap<>();
 
         globals.put("print", globalFunction((values) -> {
@@ -37,33 +37,49 @@ public class VariableTree {
         }));
 
         globals.put("printVars", globalFunction((values) -> {
-            System.out.println(instance);
+            System.out.println(instance());
             return null;
         }));
     }
 
+    public static void addInstance(VariableTree tree) {
+        instanceStack.add(tree);
+    }
+
+    public static void delInstance() {
+        instanceStack.remove(instanceStack.size() - 1);
+    }
+
+    public static VariableTree instance() {
+        return instanceStack.get(instanceStack.size() - 1);
+    }
+
+    public static void setInstance(VariableTree tree) {
+        instanceStack.set(instanceStack.size() - 1, tree);
+    }
+
     public static void addScope() {
-        instance = new VariableTree(instance);
+        setInstance(new VariableTree(instance()));
     }
 
     public static void delScope() {
-        instance = instance.next;
+        setInstance(instance().next);
     }
 
     public static void set(String name, Object val) {
-        instance.setVar(name, val);
+        instance().setVar(name, val);
     }
 
     public static void setInScope(String name, Object val) {
-        instance.setVarInScope(name, val);
+        instance().setVarInScope(name, val);
     }
 
     public static Object get(String name) {
-        return instance.getVar(name);
+        return instance().getVar(name);
     }
 
     public static void unset(String name) {
-        instance.unsetVar(name);
+        instance().unsetVar(name);
     }
 
     private Map<String, Object> map;

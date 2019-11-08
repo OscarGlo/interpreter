@@ -89,8 +89,10 @@ public class Token {
                 this.stack = new Stacktrace(text, stack);
             else
                 this.stack = new Stacktrace(text, t.getMessage());
-        else
+        else {
+            t.printStackTrace();
             this.stack = new Stacktrace(text, error);
+        }
 
         return new InterpreterError(error);
     }
