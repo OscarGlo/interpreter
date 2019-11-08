@@ -1,8 +1,8 @@
 package syntax.token.instr;
 
-import syntax.token.TName;
+import syntax.token.val.TName;
 import syntax.token.Token;
-import syntax.token.Value;
+import syntax.token.val.Value;
 import var.VariableTree;
 
 public class Affectation extends Instruction {

@@ -1,4 +1,4 @@
-package syntax.token;
+package syntax.token.val;
 
 import var.VariableTree;
 

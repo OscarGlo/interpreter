@@ -1,4 +1,6 @@
-package syntax.token;
+package syntax.token.val;
+
+import syntax.token.Token;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +26,10 @@ public abstract class Value<T> extends Token {
 
     public T getValue() {
         return value;
+    }
+
+    protected void setValue(T value) {
+        this.value = value;
     }
 
     public Class<T> getType() {

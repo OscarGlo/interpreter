@@ -1,7 +1,9 @@
-package syntax.token;
+package syntax.token.val;
+
+import syntax.token.Token;
+import syntax.token.TokenList;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 

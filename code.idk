@@ -1,0 +1,21 @@
+let incArray = fun(n, start) {
+	let a = []; let i = 0
+	if (?start)  # ? operator tests for non-nullity
+		i = start
+
+	if (i < n + start) loop {  # Equivalent to a while loop
+		a = a + i
+		i+  # Incrementation
+	}
+
+	return a
+}
+
+let unaryToBinary = fun(f, a) return f(a, a)  # Functions can be defined without brackets
+
+let i = 0; let arr = []
+
+if (i < 5) loop {
+	print(unaryToBinary(incArray, i))
+	i+
+}

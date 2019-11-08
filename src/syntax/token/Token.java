@@ -3,6 +3,7 @@ package syntax.token;
 import err.InterpreterError;
 import err.Stacktrace;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import syntax.token.val.Value;
 
 public class Token {
     private String name;

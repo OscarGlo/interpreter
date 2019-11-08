@@ -19,7 +19,7 @@ public class CompOperation extends BinaryOperation<Double, Double, Double> {
             else
                 return null;
 
-            return (double) (val ? 1 : 0);
+            return (val ? 1d : 0d);
         }, tokens);
     }
 }

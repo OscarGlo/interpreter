@@ -1,5 +1,7 @@
-package syntax.token;
+package syntax.token.val;
 
+import syntax.token.Token;
+import syntax.token.TokenList;
 import syntax.token.instr.Instruction;
 import var.VariableTree;
 
@@ -49,6 +51,6 @@ public class Function extends Value<Function> {
 
     @Override
     public String toString() {
-        return "Function";
+        return "Function[" + params.size() + ']';
     }
 }

@@ -1,6 +1,6 @@
 package syntax.token.op;
 
-import syntax.token.TNumber;
+import syntax.token.val.TNumber;
 import syntax.token.Token;
 
 public class EqOperation extends BinaryOperation<Object, Object, Double> {
@@ -15,7 +15,7 @@ public class EqOperation extends BinaryOperation<Object, Object, Double> {
             else if (!op.equals("EQUAL"))
                 return null;
 
-            return (double) (eq ? 1 : 0);
+            return (eq ? 1d : 0d);
         }, tokens);
     }
 }

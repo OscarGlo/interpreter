@@ -1,4 +1,7 @@
-package syntax.token;
+package syntax.token.val;
+
+import syntax.token.Token;
+import syntax.token.TokenList;
 
 import java.util.Collections;
 import java.util.List;
@@ -8,6 +11,8 @@ public class FunCall extends Value<Object> {
     private final List<Value> args;
 
     public FunCall(Token[] tokens) {
+        super(tokens[0]);
+
         funName = (TName) tokens[0];
 
         if (tokens[1] instanceof ParValue)
@@ -20,8 +25,13 @@ public class FunCall extends Value<Object> {
 
     @Override
     public Object getValue() {
-        Function fun = (Function) funName.getValue();
-        return fun.call(args.toArray(new Value[] {}));
+        try {
+            Function fun = (Function) funName.getValue();
+            return fun.call(args.toArray(new Value[]{}));
+        } catch (Throwable t) {
+            Value errorVal = args.stream().reduce((v1, v2) -> (v1.getStacktrace() != null ? v1 : v2)).get();
+            throw makeStacktrace(t, "Function call error", errorVal.getStacktrace());
+        }
     }
 
     @Override

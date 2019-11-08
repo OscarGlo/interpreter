@@ -1,4 +1,7 @@
-package syntax.token;
+package syntax.token.val;
+
+import syntax.token.Token;
+import syntax.token.val.Value;
 
 public class ParValue<T> extends Value<T> {
     private final Value<T> vTok;

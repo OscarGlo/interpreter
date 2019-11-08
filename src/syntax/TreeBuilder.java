@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class TreeBuilder {
     private static Map<String, String> syntax;
+    private final static String negLookExpr = "\\(-[A-Za-z.<>]+\\)";
 
     static {
         try {
@@ -34,15 +35,15 @@ public class TreeBuilder {
 
         String negLookbehind = "", first = patArr[0];
         // Parse negative lookbehind and remove from pattern
-        if (first.matches("\\(-[A-Za-z]+\\)")) {
+        if (first.matches(negLookExpr)) {
             negLookbehind = first.substring(2, first.length() - 1);
             patArr = Arrays.copyOfRange(patArr, 1, patArr.length);
         }
         String negLookahead = "", last = patArr[patArr.length - 1];
-        // Parse negative lookbehind and remove from pattern
-        if (last.matches("\\(-[A-Za-z]+\\)")) {
+        // Parse negative lookahead and remove from pattern
+        if (last.matches(negLookExpr)) {
             negLookahead = last.substring(2, last.length() - 1);
-            patArr = Arrays.copyOfRange(patArr, 1, patArr.length);
+            patArr = Arrays.copyOfRange(patArr, 0, patArr.length - 1);
         }
 
         int start = -1, pos = 0;

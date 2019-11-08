@@ -42,6 +42,7 @@ else	ELSE
 loop	LOOP
 let	LET
 fun	FUN
+return	RETURN
 
 # Special values
 true	TRUE

@@ -1,7 +1,7 @@
 package syntax.token.op;
 
 import syntax.token.Token;
-import syntax.token.Value;
+import syntax.token.val.Value;
 
 import java.lang.reflect.ParameterizedType;
 

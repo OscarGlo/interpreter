@@ -2,6 +2,9 @@ package syntax;
 
 import err.InterpreterError;
 import syntax.token.*;
+import syntax.token.val.TName;
+import syntax.token.val.TNumber;
+import syntax.token.val.TString;
 import util.Reader;
 import util.TrieNode;
 
@@ -25,7 +28,7 @@ public class Tokenizer {
 
         String acc = "";
         int line = 1, pos = 0;
-        boolean inStr = false, inComm = false, inNum = false, inName = false, escape = false;
+        boolean inStr = false, inComm = false, oneHash = false, inMultiComm = false, inNum = false, inName = false, escape = false;
         int stringPos = 0;
 
         // Loop through every character in the program
@@ -48,16 +51,30 @@ public class Tokenizer {
                 pos = 0;
 
                 c = ';';
-            } else if (c == '#' && !inComm) {
-                inComm = true;
+            } else if (c == '#') {
+                // If there was a hash before
+                if (oneHash) {
+                    // Invert multi comment status
+                    inMultiComm = !inMultiComm;
+                    inComm = false;
+                    continue;
+                } else if (!inComm || inMultiComm) {
+                    if (!inMultiComm)
+                        inComm = true;
+                    oneHash = true;
+                    continue;
+                }
             } else if (inStr && c == '\\' && !escape) {
                 escape = true;
                 continue;
             }
 
+            oneHash = false;
+
             // Ignore rest if in comment
-            if (inComm)
+            if (inComm || inMultiComm) {
                 continue;
+            }
 
             if (inNum) {
                 // Multiple decimal points

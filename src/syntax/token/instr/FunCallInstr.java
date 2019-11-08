@@ -1,6 +1,7 @@
 package syntax.token.instr;
 
-import syntax.token.FunCall;
+import err.Stacktrace;
+import syntax.token.val.FunCall;
 import syntax.token.Token;
 
 public class FunCallInstr extends Instruction {
@@ -15,5 +16,10 @@ public class FunCallInstr extends Instruction {
     @Override
     public void execute() {
         call.getValue();
+    }
+
+    @Override
+    public Stacktrace getStacktrace() {
+        return call.getStacktrace();
     }
 }

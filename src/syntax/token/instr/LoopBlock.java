@@ -1,7 +1,7 @@
 package syntax.token.instr;
 
 import syntax.token.Token;
-import syntax.token.Value;
+import syntax.token.val.Value;
 
 public class LoopBlock extends Instruction {
     final Value condition;

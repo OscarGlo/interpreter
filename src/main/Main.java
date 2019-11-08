@@ -25,7 +25,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        String code = Reader.getString("code.txt");
+        String code = Reader.getString("code.idk");
 
         long start = System.currentTimeMillis();
         Instruction instr = (Instruction) evaluate(code, true);

@@ -1,4 +1,4 @@
-package syntax.token;
+package syntax.token.val;
 
 public class TString extends Value<String> {
     public TString(String value, int line, int pos) {

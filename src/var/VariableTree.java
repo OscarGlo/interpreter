@@ -1,12 +1,12 @@
 package var;
 
 import main.Main;
-import syntax.token.Function;
-import syntax.token.Value;
+import syntax.token.val.Function;
+import syntax.token.val.Value;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class VariableTree {
     private static final Map<String, Object> globals;
@@ -26,13 +26,19 @@ public class VariableTree {
         globals = new HashMap<>();
 
         globals.put("print", globalFunction((values) -> {
-            System.out.println(Value.toString(values[0].getValue()));
+            Object val = values[0].getValue();
+            System.out.println(val instanceof String ? val : Value.toString(val));
             return null;
         }));
 
         globals.put("eval", globalFunction((values) -> {
             Value val = (Value) Main.evaluate((String) values[0].getValue(), true);
             return val.getValue();
+        }));
+
+        globals.put("printVars", globalFunction((values) -> {
+            System.out.println(instance);
+            return null;
         }));
     }
 
@@ -75,7 +81,7 @@ public class VariableTree {
     private void setVar(String name, Object val) {
         VariableTree scope = this;
 
-        while (scope.next != null) {
+        while (scope != null) {
             if (scope.map.containsKey(name)) {
                 scope.setVarInScope(name, val);
                 return;
@@ -105,5 +111,24 @@ public class VariableTree {
             map.remove(name);
         else if (this.next != null)
             next.unsetVar(name);
+    }
+
+    @Override
+    public String toString() {
+        return toString(" ");
+    }
+
+    public String toString(String prefix) {
+        StringBuilder str = new StringBuilder();
+
+        for (String var : map.keySet().stream().sorted().collect(Collectors.toList()))
+            str.append(prefix).append(var).append(" = ").append(Value.toString(map.get(var))).append('\n');
+
+        if (next != null)
+            str.append(next.toString(prefix.substring(0, prefix.length() - 1) + " ┗ "));
+        else
+            str.deleteCharAt(str.length() - 1);
+
+        return str.toString();
     }
 }

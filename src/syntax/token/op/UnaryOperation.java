@@ -1,8 +1,7 @@
 package syntax.token.op;
 
-import err.Stacktrace;
 import syntax.token.Token;
-import syntax.token.Value;
+import syntax.token.val.Value;
 
 public abstract class UnaryOperation<A, T> extends Operation<T> {
     interface UnaryOperator<A, T> {

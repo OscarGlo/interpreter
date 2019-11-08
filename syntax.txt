@@ -3,52 +3,61 @@ SEP SEP	SEP
 LBRA SEP	LBRA
 RBRA SEP	RBRA
 
+# "Booleans"
+TRUE	val.TNumber
+FALSE	val.TNumber
+
 # Parentheses
-LPAR Value RPAR	ParValue
+LPAR val.Value RPAR	val.ParValue
 
 # Functions
-FUN ParList<TName>|ParValue<TName> instr.Instruction	Function
-FUN LPAR RPAR instr.Instruction	Function
+FUN ParList<TName>|ParValue<TName> instr.Instruction	val.Function
+FUN LPAR RPAR instr.Instruction	val.Function
 
-TName ParList<Value>	FunCall
-TName ParValue	FunCall
-TName LPAR RPAR	FunCall
+val.Value ParList<val.Value>	val.FunCall
+val.Value ParValue	val.FunCall
+val.Value LPAR RPAR	val.FunCall
 
 # Arrays
-Value LSBRA Value RSBRA	ArrayAccess
-
-LSBRA TokenList<Value>|Value RSBRA	TArray
-LSBRA RSBRA	TArray
-
-# Unary
-(-Value) DIV Value	op.Opposite
-(-Value) MINUS Value	op.Inverse
-QUESTION Value	op.Nullity
-NOT Value	op.Not
-
-# Power
-Value SQUARE	op.Square
-Value POW Value	op.Power
-
-# Basic operation order groups
-Value MUL|DIV|MOD Value	op.MulOperation
-Value PLUS|MINUS Value	op.AddOperation
-Value GREATER|GREAT_EQ|LOWER|LOW_EQ Value	op.CompOperation
-Value EQUAL|NOT_EQ Value	op.EqOperation
-
-# Boolean operations
-Value AND Value	op.And
-Value OR Value	op.Or
-
-# Instructions
-LET TName AFF Value	instr.Definition
-TName AFF Value	instr.Affectation
-FunCall	instr.FunCallInstr
-LBRA instr.Instruction RBRA	instr.BraInstruction
+LSBRA TokenList|val.Value RSBRA	val.TArray
+LSBRA RSBRA	val.TArray
 
 # Lists
-Token|TokenList COMMA Token	TokenList
+val.Value|TokenList COMMA val.Value	TokenList
 LPAR TokenList RPAR	ParList
+
+val.Value TArray	val.ArrayAccess
+
+# Unary
+(-val.Value) DIV val.Value	op.Opposite
+(-val.Value) MINUS val.Value	op.Inverse
+QUESTION val.Value	op.Nullity
+NOT val.Value	op.Not
+
+# Power
+val.Value SQUARE	op.Square
+val.Value POW val.Value	op.Power
+
+# Basic operation order groups
+val.Value MUL|DIV|MOD val.Value	op.MulOperation
+val.Value PLUS|MINUS val.Value	op.AddOperation
+val.Value GREATER|GREAT_EQ|LOWER|LOW_EQ val.Value	op.CompOperation
+val.Value EQUAL|NOT_EQ val.Value	op.EqOperation
+
+# Boolean operations
+val.Value AND val.Value	op.And
+val.Value OR val.Value	op.Or
+
+# Instructions
+LET TName AFF val.Value	instr.Definition
+TName AFF val.Value	instr.Affectation
+RETURN val.Value	instr.Return
+
+TName PLUS (-val.Value)	instr.Increment
+TName MINUS (-val.Value)	instr.Decrement
+
+FunCall	instr.FunCallInstr
+LBRA instr.Instruction RBRA	instr.BraInstruction
 
 # Blocks
 IF ParValue instr.Instruction	instr.IfBlock
@@ -61,5 +70,6 @@ instr.Instruction SEP instr.Instruction	instr.InstructionList
 instr.Instruction instr.Instruction	instr.InstructionList
 
 # Final cleanup
+SEP instr.Instruction	instr.ReduceInstruction
 instr.Instruction SEP	instr.ReduceInstruction
-Value SEP	SEP
+val.Value SEP	SEP
