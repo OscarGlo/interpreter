@@ -8,9 +8,9 @@ public class IfElseBlock extends Instruction {
 
     public IfElseBlock(Token[] tokens) {
         super(tokens[0]);
-        checkTokenNum(tokens.length, 2);
         ifBlock = (IfBlock) tokens[0];
-        elseBlock = (ElseBlock) tokens[1];
+        int elseIdx = tokens[1].getName().equals("SEP") ? 2 : 1;
+        elseBlock = (ElseBlock) tokens[elseIdx];
     }
 
     @Override

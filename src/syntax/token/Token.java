@@ -2,7 +2,6 @@ package syntax.token;
 
 import err.InterpreterError;
 import err.Stacktrace;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import syntax.token.val.Value;
 
 public class Token {
@@ -14,11 +13,6 @@ public class Token {
         this.name = name.trim();
         this.line = line;
         this.pos = pos;
-    }
-
-    // Methods for building tokens wih token arrays
-    public Token(Token[] tokens) {
-        throw new NotImplementedException();
     }
 
     public Token() {

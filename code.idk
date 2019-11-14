@@ -26,3 +26,15 @@ if (i < 5) loop {
 	print(a)
 	i+
 }##
+
+let fact = fun(i) {
+    if (i == 1) {
+        print(1)
+        return 1
+    } else {
+        print(i + " *")
+        return i * fact(i - 1)
+    }
+}
+
+print(fact(3))

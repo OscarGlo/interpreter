@@ -62,7 +62,8 @@ LBRA instr.Instruction RBRA	instr.BraInstruction
 # Blocks
 IF ParValue instr.Instruction	instr.IfBlock
 ELSE instr.Instruction	instr.ElseBlock
-IfBlock ElseBlock	instr.IfElseBlock
+instr.IfBlock instr.ElseBlock	instr.IfElseBlock
+instr.IfBlock SEP instr.ElseBlock	instr.IfElseBlock
 IF ParValue LOOP instr.Instruction	instr.LoopBlock
 
 # Instruction reducing
@@ -70,6 +71,6 @@ instr.Instruction SEP instr.Instruction	instr.InstructionList
 instr.Instruction instr.Instruction	instr.InstructionList
 
 # Final cleanup
-SEP instr.Instruction	instr.ReduceInstruction
 instr.Instruction SEP	instr.ReduceInstruction
+SEP instr.Instruction	instr.ReduceInstruction
 val.Value SEP	SEP

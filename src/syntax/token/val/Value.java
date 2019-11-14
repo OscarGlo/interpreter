@@ -45,9 +45,6 @@ public abstract class Value<T> extends Token {
             else
                 return db.toString();
 
-        } else if (obj instanceof String) {
-            return '"' + (String) obj + '"';
-
         } else if (obj instanceof List) {
             List l = (List) obj;
             String join = (String) l.stream().map(Value::toString).collect(Collectors.joining(", "));
